@@ -1,0 +1,1773 @@
+
+  (function initColor() {
+    const colors = ["#FFFFFF","#D1D1D1","#A3A3A3","#767676","#484848","#1A1A1A","#1A1515","#1A1010","#1A0A0C","#1A0508","#1A0004"];
+    const themeIncrements = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+  
+    colors.forEach((color, index) => {
+      const propName = `--ai-create-color-theme-${themeIncrements[index]}`;
+      document.documentElement.style.setProperty(propName, color);
+    });
+  })();
+  
+  (function initFont() {
+    [
+      { name: 'Raleway', key: '--custom-heading-font', fontFamily: 'Raleway,ui-sans-serif, system-ui, -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"' },
+      { name: 'Lato', key: '--custom-body-font', fontFamily: 'Lato,ui-sans-serif, system-ui, -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"' },
+    ]
+      .forEach(({ name, key, fontFamily }) => {
+        if (name && name !== "undefined") {
+          const font = new FontFace(name, `url("/static/font/${name}.ttf")`);
+          document.fonts.add(font);
+          font.load();
+          document.documentElement.style.setProperty(key, fontFamily);
+        }
+      });
+  })();
+  async function render() {
+  window.siteRoutes = [{
+    "name": "Startseite",
+    "path": "startseite",
+    "title": "Startseite - Kanzlei Landingpage"
+  }, {
+    "name": "Kontakt",
+    "path": "kontakt",
+    "title": "Kontakt - Kanzlei Landingpage"
+  }];
+  window.attachments = [];
+  window.turi = {
+    "botUrl": null,
+    "botStatus": 0
+  };
+  const routerList = [];
+  const createRoot = await siteEngine.getPackage("createRoot");
+  const React = await siteEngine.getPackage("React");
+  const ErrorBoundary = await siteEngine.getPackage("ErrorBoundary");
+  const RouterWrap = await siteEngine.getPackage("RouterWrap");
+  const ReactRouterDom = await siteEngine.getPackage('ReactRouterDom');
+  const createBrowserRouter = ReactRouterDom.createBrowserRouter;
+  const RouterProvider = ReactRouterDom.RouterProvider;
+  const Navigate = ReactRouterDom.Navigate;
+  const AnimateInView = await siteEngine.getPackage('@Basic/AnimateInView');
+  const EditableImg = await siteEngine.getPackage('@Basic/EditableImg');
+  const EditableText = await siteEngine.getPackage('@Basic/EditableText');
+  const EditableButton = await siteEngine.getPackage('@Basic/EditableButton');
+  const EditableIcon = await siteEngine.getPackage('@Basic/EditableIcon');
+  const EditableMedia = await siteEngine.getPackage('@Basic/EditableMedia');
+  const EditableEmbed = await siteEngine.getPackage('@Basic/EditableEmbed');
+  const EmbedPopover = await siteEngine.getPackage('@Basic/EmbedPopover');
+  const EmbedSidetab = await siteEngine.getPackage('@Basic/EmbedSidetab');
+  const AIChatBox = await siteEngine.getPackage('@Basic/AIChatBox');
+  const ComponentSlot = await siteEngine.getPackage('@Basic/ComponentSlot');
+  const Overflow = await siteEngine.getPackage('@Basic/Overflow');
+  const {
+    debounce,
+    throttle
+  } = await siteEngine.getPackage('lodash-es');
+  const Marquee = await siteEngine.getPackage('Marquee'); //跑马灯
+  const Carousel = await siteEngine.getPackage('Carousel'); //轮播图
+  const motion = await siteEngine.getPackage('motion');
+  const framerMotion = await siteEngine.getPackage('framerMotion');
+  const AnimatePresence = await siteEngine.getPackage('AnimatePresence');
+  let Navigation = /*#__PURE__*/React.createElement(React.Fragment, null);
+  let Footer = /*#__PURE__*/React.createElement(React.Fragment, null);
+  const defaultRouter = "startseite";
+  function Layout(props) {
+    return /*#__PURE__*/React.createElement(RouterWrap, null, Navigation, props.children, Footer, /*#__PURE__*/React.createElement(EmbedPopover, null), /*#__PURE__*/React.createElement(EmbedSidetab, null), /*#__PURE__*/React.createElement(AIChatBox, null));
+  }
+  try {
+    function Navigation_01({
+      logo = 'https://cdn.wegic.ai/assets/onepage/thread/icon/default.png',
+      navItems = ['text=Home&link=/home', 'text=About&link=/about', 'text=Service&link=/service', 'text=Case&link=/case', 'text=Blog&link=/blog', 'text=Contact&link=/contact', 'text=Location&link=/location', 'text=Map&link=/map'],
+      primaryButton = {
+        icon: 'fa-solid fa-arrow-right',
+        textAttr: 'Contact us',
+        textColor: 'black'
+      },
+      secondaryButton,
+      fixedTop = true,
+      logoSize = 40,
+      showButton = true,
+      maxCount = 7
+    }) {
+      const LOGO_MAX_WIDTH = React.useMemo(() => 300, []);
+      const MOBILE_WIDTH = React.useMemo(() => 768, []);
+      const viewportId = React.useMemo(() => {
+        var _window;
+        return ((_window = window) === null || _window === void 0 || (_window = _window.siteEngine) === null || _window === void 0 ? void 0 : _window.scrollContainerId) || 'preview-viewport';
+      }, []);
+      const [viewportHeight, setViewportHeight] = React.useState(0);
+      const [mobileMode, setMobileMode] = React.useState(false);
+      const moreButtonRef = React.useRef(null);
+      const [moreListVisible, setMoreListVisible] = React.useState(false);
+      const mobileListRef = React.useRef(null);
+      const [mobileListVisible, setMobileListVisible] = React.useState(false);
+      const [mobileEntryVisible, setMobileEntryVisible] = React.useState(false);
+      const buttonVisible = showButton && (secondaryButton || primaryButton);
+      const layoutObject = React.useMemo(() => {
+        const layout = {
+          logoSize: 0,
+          navHeight: 0,
+          buttonHeight: 0,
+          buttonPX: 0,
+          fontSize: 0,
+          dropDownHeight: 0,
+          dropDownPaddingLeft: 0,
+          dropDownPaddingRight: 0,
+          mobileNavHeight: 56,
+          mobileNavItemHeight: 56,
+          mobileFontSize: 14,
+          mobileIconSize: 20
+        };
+        if (logoSize < 48) {
+          layout.fontSize = 14;
+          layout.dropDownHeight = 48;
+          layout.dropDownPaddingLeft = 12;
+          layout.dropDownPaddingRight = 48;
+        } else if (logoSize >= 48 && logoSize < 64) {
+          layout.fontSize = 15;
+          layout.dropDownHeight = 64;
+          layout.dropDownPaddingLeft = 20;
+          layout.dropDownPaddingRight = 80;
+        } else if (logoSize >= 64) {
+          layout.fontSize = 16;
+          layout.dropDownHeight = 64;
+          layout.dropDownPaddingLeft = 20;
+          layout.dropDownPaddingRight = 80;
+        }
+        if (mobileMode) {
+          if (logoSize < 56) {
+            layout.logoSize = 32;
+            layout.mobileNavHeight = 56;
+            layout.mobileFontSize = 14;
+            layout.mobileIconSize = 20;
+          } else {
+            layout.logoSize = 48;
+            layout.mobileNavHeight = 72;
+            layout.mobileFontSize = 16;
+            layout.mobileIconSize = 24;
+          }
+        } else {
+          layout.logoSize = logoSize;
+          if (logoSize < 56) {
+            layout.navHeight = logoSize + 24;
+          } else if (logoSize >= 56 && logoSize < 64) {
+            layout.navHeight = logoSize + 40;
+          } else {
+            layout.navHeight = 120;
+          }
+        }
+
+        /** button */
+        if (logoSize < 48) {
+          layout.buttonHeight = 40;
+          layout.buttonPX = 20;
+        } else if (logoSize >= 48 && logoSize < 56) {
+          layout.buttonHeight = 48;
+          layout.buttonPX = 20;
+        } else {
+          layout.buttonHeight = 56;
+          layout.buttonPX = 28;
+        }
+        return layout;
+      }, [logoSize, mobileMode]);
+      const [isOverWidthLogo, setIsOverWidthLogo] = React.useState(false);
+      const logoRectRef = React.useRef(null);
+      const [overflow, setOverflow] = React.useState(false);
+      const overflowRef = React.useRef(null);
+      const handleViewportWidthChange = React.useCallback(throttle(entries => {
+        const entry = entries[0];
+        const rect = entry.contentRect;
+        setViewportHeight(rect.height);
+        if (rect.width > MOBILE_WIDTH) {
+          mobileMode && setMobileMode(false);
+        } else {
+          !mobileMode && setMobileMode(true);
+        }
+      }, 16), [mobileMode]);
+      React.useEffect(() => {
+        const scrollDom = document.getElementById(viewportId);
+        const observer = new ResizeObserver(handleViewportWidthChange);
+        observer.observe(scrollDom);
+        return () => {
+          observer.disconnect();
+        };
+      }, [viewportId, handleViewportWidthChange]);
+      React.useEffect(() => {
+        if (!mobileMode) {
+          setMobileListVisible(false);
+        } else {
+          setMoreListVisible(false);
+        }
+      }, [mobileMode]);
+      const handleCloseMoreList = e => {
+        var _moreButtonRef$curren;
+        if ((_moreButtonRef$curren = moreButtonRef.current) !== null && _moreButtonRef$curren !== void 0 && _moreButtonRef$curren.contains(e.target)) {
+          return;
+        }
+        if (moreListVisible) {
+          setMoreListVisible(false);
+        }
+      };
+      React.useEffect(() => {
+        window.addEventListener('click', handleCloseMoreList);
+        return () => {
+          window.removeEventListener('click', handleCloseMoreList);
+        };
+      }, [moreListVisible]);
+      React.useEffect(() => {
+        var _window2;
+        const handleScroll = throttle(e => {
+          if (!e.target) {
+            return;
+          }
+          if (mobileListVisible) {
+            setMobileListVisible(false);
+          }
+        }, 32);
+        let scrollContainer = (_window2 = window) === null || _window2 === void 0 ? void 0 : _window2.document.getElementById(viewportId);
+        scrollContainer === null || scrollContainer === void 0 || scrollContainer.addEventListener('scroll', handleScroll);
+        return () => {
+          scrollContainer === null || scrollContainer === void 0 || scrollContainer.removeEventListener('scroll', handleScroll);
+        };
+      }, [mobileListVisible]);
+      React.useEffect(() => {
+        let count = navItems.length;
+        if (showButton) {
+          if (primaryButton) count++;
+          if (secondaryButton) count++;
+        }
+        setMobileEntryVisible(count > 1);
+        count <= 1 && setMobileListVisible(false);
+      }, [primaryButton, secondaryButton, navItems, showButton]);
+
+      /** update logo mode start */
+      const handleImageAspectRatioUpdate = () => {
+        if (!logoRectRef.current) {
+          return;
+        }
+        const currentAspectRatio = LOGO_MAX_WIDTH / layoutObject.logoSize;
+        const {
+          naturalWidth,
+          naturalHeight
+        } = logoRectRef.current;
+        const aspectRatio = naturalWidth / naturalHeight;
+        setIsOverWidthLogo(aspectRatio > currentAspectRatio);
+      };
+      React.useEffect(() => {
+        var _logoRectRef$current;
+        if (((_logoRectRef$current = logoRectRef.current) === null || _logoRectRef$current === void 0 ? void 0 : _logoRectRef$current.logo) === logo) {
+          handleImageAspectRatioUpdate();
+          return;
+        }
+        const image = new Image();
+        image.onload = () => {
+          logoRectRef.current = {
+            logo,
+            naturalWidth: image.naturalWidth,
+            naturalHeight: image.naturalHeight
+          };
+          handleImageAspectRatioUpdate();
+        };
+        image.src = logo;
+      }, [logo, layoutObject]);
+      /** update logo mode end */
+
+      const renderNavItem = (item, index, textClassName) => {
+        return /*#__PURE__*/React.createElement(EditableButton, {
+          key: item,
+          style: {
+            fontSize: layoutObject.fontSize
+          },
+          className: `${index ? 'ml-8' : ''} py-3 text-black whitespace-nowrap cursor-pointer hover:text-black/60 hover:transition-all duration-100 dark:text-white dark:hover:text-white/60`
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `navItems_${index}`,
+          className: textClassName
+        }, item));
+      };
+      const renderMoreListItems = (items, startIndex = 0) => {
+        return items.map((item, index) => {
+          return /*#__PURE__*/React.createElement(EditableButton, {
+            key: item,
+            style: {
+              height: layoutObject.dropDownHeight,
+              paddingLeft: layoutObject.dropDownPaddingLeft,
+              paddingRight: layoutObject.dropDownPaddingRight,
+              fontSize: layoutObject.fontSize,
+              ...(overflow & index === 0 ? {
+                height: 0,
+                opacity: 0,
+                pointerEvents: 'none'
+              } : {})
+            },
+            className: "flex-shrink-0 w-full h-full text-black whitespace-nowrap cursor-pointer text-left hover:text-black/60 hover:transition-all duration-100 dark:text-white dark:hover:text-white/60",
+            onClick: () => setMoreListVisible(false)
+          }, /*#__PURE__*/React.createElement(EditableText, {
+            propKey: `navItems_${startIndex + index}`
+          }, item));
+        });
+      };
+      const renderRest = omittedItems => /*#__PURE__*/React.createElement("div", {
+        className: `relative ml-8`
+      }, /*#__PURE__*/React.createElement(motion.button, {
+        ref: moreButtonRef,
+        className: "w-10 h-10 flex items-center justify-center flex-shrink-0",
+        onClick: () => setMoreListVisible(!moreListVisible),
+        whileTap: {
+          scale: 0.9
+        },
+        style: {
+          fontSize: layoutObject.fontSize
+        }
+      }, /*#__PURE__*/React.createElement("svg", {
+        style: {
+          transform: 'translateY(2px)'
+        },
+        className: "hover:transition-all hover:scale-110 text-black dark:text-white",
+        width: "20",
+        height: "20",
+        viewBox: "0 0 20 20",
+        fill: "none",
+        xmlns: "http://www.w3.org/2000/svg"
+      }, /*#__PURE__*/React.createElement("circle", {
+        cx: "3",
+        cy: "10",
+        r: "1.5",
+        fill: "currentColor"
+      }), /*#__PURE__*/React.createElement("circle", {
+        cx: "10",
+        cy: "10",
+        r: "1.5",
+        fill: "currentColor"
+      }), /*#__PURE__*/React.createElement("circle", {
+        cx: "17",
+        cy: "10",
+        r: "1.5",
+        fill: "currentColor"
+      }))), moreListVisible && /*#__PURE__*/React.createElement(AnimatePresence, null, /*#__PURE__*/React.createElement(motion.div, {
+        style: {
+          boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.06)',
+          fontSize: layoutObject.fontSize
+        },
+        className: `max-h-96 overflow-auto overscroll-contain absolute z-40 top-full left-0 xl:left-auto xl:right-0 flex flex-col p-1 rounded-md bg-white border border-[#0000000a] dark:border-white/10 dark:bg-black`,
+        animate: {
+          scale: [0, 1],
+          opacity: [0, 1]
+        }
+      }, renderMoreListItems(omittedItems, navItems.length - omittedItems.length))));
+      const handleOverflowUpdate = width => {
+        setOverflow(width.length <= 1);
+      };
+      const renderNavList = items => {
+        return /*#__PURE__*/React.createElement(Overflow, {
+          ref: overflowRef,
+          data: items,
+          style: {
+            height: layoutObject.logoSize
+          },
+          className: `flex flex-1 items-center justify-start flex-shrink-0 min-w-0 ${overflow ? 'translate-x-[80px]' : ''}`,
+          renderItem: renderNavItem,
+          maxCount: maxCount,
+          minCount: 0,
+          renderRest: renderRest,
+          onUpdate: handleOverflowUpdate
+        });
+      };
+      const handleMobileButtonClick = e => {
+        mobileListVisible && setMobileListVisible(false);
+      };
+      const renderContent = () => {
+        if (mobileMode) {
+          return /*#__PURE__*/React.createElement("div", {
+            className: "relative flex flex-col"
+          }, /*#__PURE__*/React.createElement("div", {
+            className: "relative flex flex-shrink-0 z-40 w-full pl-4 justify-between items-center overflow-hidden md:hidden",
+            style: {
+              height: layoutObject.mobileNavHeight,
+              fontSize: layoutObject.mobileFontSize
+            }
+          }, /*#__PURE__*/React.createElement(EditableImg, {
+            propKey: "logo",
+            style: {
+              height: isOverWidthLogo ? undefined : layoutObject.logoSize
+            },
+            className: `${isOverWidthLogo ? `!w-[${LOGO_MAX_WIDTH}px]` : `!w-auto`} !max-w-[${LOGO_MAX_WIDTH}px] object-cover flex-shrink min-w-0`,
+            src: logo,
+            alt: "logo"
+          }), /*#__PURE__*/React.createElement(motion.button, {
+            className: `${!mobileEntryVisible ? 'hidden' : ''} flex justify-center items-center text-black flex-shrink-0`,
+            onClick: () => setMobileListVisible(!mobileListVisible),
+            whileTap: {
+              scale: 0.9
+            },
+            style: {
+              width: layoutObject.mobileNavHeight,
+              height: layoutObject.mobileNavHeight,
+              fontSize: layoutObject.mobileFontSize
+            }
+          }, mobileListVisible ? /*#__PURE__*/React.createElement("svg", {
+            width: layoutObject.mobileIconSize,
+            height: layoutObject.mobileIconSize,
+            viewBox: "0 0 20 20",
+            fill: "none",
+            xmlns: "http://www.w3.org/2000/svg"
+          }, /*#__PURE__*/React.createElement("path", {
+            d: "M4 16L16 4.25115",
+            stroke: "currentColor",
+            strokeWidth: "1.5",
+            strokeLinecap: "round"
+          }), /*#__PURE__*/React.createElement("path", {
+            d: "M4 4L16 15.7489",
+            stroke: "currentColor",
+            strokeWidth: "1.5",
+            strokeLinecap: "round"
+          })) : /*#__PURE__*/React.createElement("svg", {
+            width: layoutObject.mobileIconSize,
+            height: layoutObject.mobileIconSize,
+            viewBox: "0 0 20 20",
+            fill: "none",
+            xmlns: "http://www.w3.org/2000/svg"
+          }, /*#__PURE__*/React.createElement("path", {
+            d: "M3 5L16.375 5",
+            stroke: "currentColor",
+            strokeWidth: "1.5",
+            strokeLinecap: "round"
+          }), /*#__PURE__*/React.createElement("path", {
+            d: "M3 10H16.375",
+            stroke: "currentColor",
+            strokeWidth: "1.5",
+            strokeLinecap: "round"
+          }), /*#__PURE__*/React.createElement("path", {
+            d: "M3 15H16.375",
+            stroke: "currentColor",
+            strokeWidth: "1.5",
+            strokeLinecap: "round"
+          })))), mobileListVisible && /*#__PURE__*/React.createElement("div", {
+            ref: mobileListRef,
+            className: "absolute z-50 top-full w-full flex flex-grow flex-shrink flex-col bg-[#ffffffe0] dark:bg-black/80 backdrop-blur-xl rounded-b-3xl shadow-xl overflow-hidden md:hidden",
+            style: {
+              fontSize: layoutObject.mobileFontSize,
+              height: viewportHeight - layoutObject.mobileNavHeight - 24
+            }
+          }, /*#__PURE__*/React.createElement(motion.nav, {
+            className: `w-full h-full flex flex-col rounded-b-3xl`,
+            animate: {
+              y: [20, 0],
+              opacity: [0, 1]
+            },
+            transition: {
+              duration: 0.4
+            }
+          }, /*#__PURE__*/React.createElement("div", {
+            className: "flex flex-col flex-grow flex-shrink overflow-auto overscroll-contain"
+          }, navItems.map((item, navIndex) => /*#__PURE__*/React.createElement(EditableButton, {
+            style: {
+              height: layoutObject.mobileNavItemHeight,
+              maxHeight: layoutObject.mobileNavItemHeight,
+              fontSize: layoutObject.mobileFontSize
+            },
+            key: item,
+            onClick: handleMobileButtonClick,
+            className: "w-full flex-grow-0 flex-shrink-0 text-black whitespace-nowrap cursor-pointer hover:text-black/60 hover:transition-all duration-100 dark:text-white dark:hover:text-white/60 select-none"
+          }, /*#__PURE__*/React.createElement(EditableText, {
+            propKey: `navItems_${navIndex}`
+          }, item)))), /*#__PURE__*/React.createElement("div", {
+            className: `${showButton ? '' : 'hidden'} w-full h-fit flex-shrink-0 flex items-center justify-between overflow-hidden gap-5 px-5 py-[10px]`
+          }, secondaryButton && /*#__PURE__*/React.createElement(EditableButton, {
+            onClick: handleMobileButtonClick,
+            style: {
+              height: layoutObject.mobileNavItemHeight,
+              fontSize: layoutObject.mobileFontSize
+            },
+            className: `BTN-SECONDARY overflow-hidden px-10 flex-1 group/nav whitespace-nowrap font-normal text-black flex justify-center gap-2 items-center rounded-full hover:bg-black/5 hover:transition-all hover:duration-300`
+          }, /*#__PURE__*/React.createElement(EditableText, {
+            className: "overflow-hidden text-ellipsis",
+            propKey: "secondaryButton_textAttr"
+          }, secondaryButton.textAttr), /*#__PURE__*/React.createElement(EditableIcon, {
+            propKey: "secondaryButton_icon",
+            icon: secondaryButton.icon,
+            iconLibrary: "FontAwesome",
+            className: " text-black group-hover/nav:translate-x-1 transition-all"
+          })), primaryButton && /*#__PURE__*/React.createElement(EditableButton, {
+            onClick: handleMobileButtonClick,
+            style: {
+              height: layoutObject.mobileNavItemHeight,
+              color: primaryButton.textColor ? primaryButton.textColor : 'black',
+              fontSize: layoutObject.mobileFontSize
+            },
+            className: `BTN-PRIMARY overflow-hidden px-10 flex-1 group/nav whitespace-nowrap font-normal flex justify-center gap-2 items-center rounded-full bg-blue-500 hover:bg-blue-600 hover:transition-all hover:duration-300`
+          }, /*#__PURE__*/React.createElement(EditableText, {
+            className: "overflow-hidden text-ellipsis",
+            propKey: "primaryButton_textAttr"
+          }, primaryButton.textAttr), /*#__PURE__*/React.createElement(EditableIcon, {
+            propKey: "primaryButton_icon",
+            icon: primaryButton.icon,
+            iconLibrary: "FontAwesome",
+            style: {
+              color: primaryButton.textColor ? primaryButton.textColor : 'black'
+            },
+            className: " group-hover/nav:translate-x-1 transition-all"
+          }))))));
+        }
+        return /*#__PURE__*/React.createElement("div", {
+          style: {
+            height: layoutObject.navHeight
+          },
+          className: "w-full hidden gap-16 md:flex justify-between items-center"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "flex flex-1 flex-shrink  min-w-0 items-center"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "w-0"
+        }, overflow && renderNavItem(navItems[0], 0, 'max-w-[80px] overflow-hidden text-ellipsis text-nowrap flex-shrink-0')), renderNavList(navItems)), /*#__PURE__*/React.createElement("div", {
+          className: `w-fit h-full flex items-center flex-shrink-0 min-w-0 ${buttonVisible ? 'justify-center' : 'justify-end'}`
+        }, /*#__PURE__*/React.createElement(EditableImg, {
+          propKey: "logo",
+          style: {
+            height: isOverWidthLogo ? undefined : layoutObject.logoSize
+          },
+          className: `${isOverWidthLogo ? `!w-[${LOGO_MAX_WIDTH}px]` : `!w-auto`} !max-w-[${LOGO_MAX_WIDTH}px] object-cover flex-shrink-0 min-w-0`,
+          src: logo,
+          alt: "logo"
+        })), buttonVisible && /*#__PURE__*/React.createElement("div", {
+          className: `w-fit h-full flex flex-1 items-center justify-end overflow-hidden gap-3 flex-shrink`
+        }, secondaryButton && /*#__PURE__*/React.createElement(EditableButton, {
+          style: {
+            height: layoutObject.buttonHeight,
+            fontSize: layoutObject.fontSize
+          },
+          className: `BTN-SECONDARY max-w-[180px] w-fit px-5 group/nav whitespace-nowrap font-normal text-black flex gap-2 items-center rounded-full hover:bg-black/5 hover:transition-all hover:duration-300`
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          className: "overflow-hidden text-ellipsis",
+          propKey: "secondaryButton_textAttr"
+        }, secondaryButton.textAttr), /*#__PURE__*/React.createElement(EditableIcon, {
+          propKey: "secondaryButton_icon",
+          icon: secondaryButton.icon,
+          iconLibrary: "FontAwesome",
+          className: "text-sm text-black group-hover/nav:translate-x-1 transition-all"
+        })), primaryButton && /*#__PURE__*/React.createElement(EditableButton, {
+          style: {
+            height: layoutObject.buttonHeight,
+            color: primaryButton.textColor ? primaryButton.textColor : 'black',
+            padding: `0 ${layoutObject.buttonPX}px`,
+            fontSize: layoutObject.fontSize
+          },
+          className: `BTN-PRIMARY max-w-[180px] w-fit  group/nav  whitespace-nowrap font-normal flex gap-2 items-center rounded-full bg-blue-500 hover:bg-blue-600 hover:transition-all hover:duration-300`
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          className: "overflow-hidden text-ellipsis",
+          propKey: "primaryButton_textAttr"
+        }, primaryButton.textAttr), /*#__PURE__*/React.createElement(EditableIcon, {
+          propKey: "primaryButton_icon",
+          icon: primaryButton.icon,
+          iconLibrary: "FontAwesome",
+          style: {
+            color: primaryButton.textColor ? primaryButton.textColor : 'black'
+          },
+          className: "text-sm group-hover/nav:translate-x-1 transition-all"
+        }))));
+      };
+      return /*#__PURE__*/React.createElement("section", {
+        style: {
+          transitionTimingFunction: 'cubic-bezier(.165,.84,.44,1)',
+          transitionDuration: '300ms',
+          fontSize: layoutObject.fontSize,
+          height: mobileMode && mobileListVisible ? viewportHeight - 48 : 'auto'
+        },
+        className: `${fixedTop ? 'sticky' : 'relative'} z-40 top-0 w-full bg-[#ffffffe0] dark:bg-black/80 backdrop-blur-sm md:px-8`
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "max-w-7xl mx-auto w-full h-full"
+      }, renderContent()));
+    }
+    Navigation = /*#__PURE__*/React.createElement(ErrorBoundary, {
+      key: "3TLTIYyn30qDmI9stg8I9"
+    }, /*#__PURE__*/React.createElement(Navigation_01, {
+      "fixedTop": false,
+      "logo": "https://cdn.wegic.ai/assets/onepage/thread/icon/1740738871758.png",
+      "logoSize": 40,
+      "siteTitle": "Kanzlei Landingpage",
+      "navItems": ["text=Startseite&link=startseite", "text=Kontakt&link=kontakt"],
+      "showButton": true,
+      "primaryButton": {
+        "icon": "fa-solid fa-arrow-right",
+        "textAttr": "text=Kontaktieren Sie uns",
+        "textColor": "#000000"
+      },
+      "version": 3,
+      key: "3TLTIYyn30qDmI9stg8I9"
+    }));
+  } catch (error) {}
+  {
+    const list = [];
+    try {
+      function Hero_28({
+        title = "Travel and discover the beauty of life",
+        description = "Embark on a journey with us and discover the wonders hidden around every corner. Experience a safe and comfortable trip.",
+        images = ["https://source.unsplash.com/1000x800/?Maldives", "https://source.unsplash.com/1000x800/?Paris", "https://source.unsplash.com/1000x800/?China", "https://source.unsplash.com/1000x800/?USA", "https://source.unsplash.com/1000x800/?Japan", "https://source.unsplash.com/1000x800/?Malaysia", "https://source.unsplash.com/1000x800/?Singapore", "https://source.unsplash.com/1000x800/?Thailand"],
+        primaryButton = {
+          icon: "fa-solid fa-arrow-right",
+          textAttr: "text=Contact us&link=/"
+        },
+        secondaryButton = {
+          textAttr: "text=Learn more&link=/"
+        },
+        features = [{
+          icon: "fa-solid fa-user",
+          text: "Personalise"
+        }, {
+          icon: "fa-solid fa-shield-heart",
+          text: "Safety"
+        }, {
+          icon: "fa-solid fa-earth-americas",
+          text: "Anywhere"
+        }]
+      }) {
+        return /*#__PURE__*/React.createElement("section", {
+          className: "w-full px-6 py-24 bg-white dark:bg-black md:px-8 md:py-32"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "relative w-full mx-auto max-w-7xl flex flex-col gap-24"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "w-full h-full grid grid-cols-1 items-end gap-16 md:grid-cols-2"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: " w-full flex flex-col gap-16"
+        }, /*#__PURE__*/React.createElement("h1", {
+          className: "TITLE-PRIMARY text-5xl font-semibold text-slate-900 dark:text-slate-50 md:text-6xl"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `title`
+        }, title)), /*#__PURE__*/React.createElement("div", {
+          className: "flex items-center gap-6"
+        }, /*#__PURE__*/React.createElement(EditableButton, {
+          className: "BTN-PRIMARY w-fit h-12 px-6 group text-sm font-semibold uppercase text-white flex gap-2 items-center rounded-full bg-orange-500 hover:bg-orange-400 hover:transition-all hover:duration-300 md:px-8 md:text-base md:h-14"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `primaryButton_textAttr`
+        }, primaryButton.textAttr), /*#__PURE__*/React.createElement(EditableIcon, {
+          propKey: `primaryButton_icon`,
+          icon: primaryButton.icon,
+          iconLibrary: "FontAwesome",
+          className: "text-base text-white group-hover:translate-x-1 transition-all"
+        })), /*#__PURE__*/React.createElement(EditableButton, {
+          className: "BTN-SECONDARY w-fit h-12 px-6 text-sm font-semibold uppercase flex gap-2 items-center rounded-full border border-slate-900 dark:border-slate-50  dark:text-slate-50 hover:bg-slate-900 hover:text-slate-50 hover:transition-all hover:duration-300 hover:dark:text-slate-900 hover:dark:bg-slate-50 md:text-base md:px-8 md:h-14"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `secondaryButton_textAttr`
+        }, secondaryButton.textAttr)))), /*#__PURE__*/React.createElement("div", {
+          className: "w-full flex flex-col gap-16"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "w-full flex flex-col gap-6"
+        }, /*#__PURE__*/React.createElement(motion.svg, {
+          className: "w-16 h-auto fill-orange-500",
+          viewBox: "0 0 113 62",
+          fill: "none",
+          xmlns: "http://www.w3.org/2000/svg"
+        }, /*#__PURE__*/React.createElement(motion.path, {
+          initial: {
+            offsetPath: 0
+          },
+          whileInView: {
+            offsetPath: 1
+          },
+          "fill-rule": "evenodd",
+          "clip-rule": "evenodd",
+          d: "M13.7472 16.0139C8.53124 20.2605 4.96284 24.6492 3.89742 27.8455C3.54813 28.8934 2.41549 29.4597 1.3676 29.1104C0.319715 28.7611 -0.246607 27.6285 0.102686 26.5806C1.53727 22.2768 5.84387 17.2904 11.2217 12.912C16.6724 8.4742 23.5363 4.40599 30.4873 2.06733C37.3947 -0.256691 44.6927 -0.969844 50.7732 1.76375C55.9527 4.09228 59.8821 8.74742 61.9572 16.1338C68.6552 15.0027 74.7486 15.4331 80.0992 17.03C92.7803 20.8147 100.936 31.081 102.598 41.6704L112.357 44.9792L95.0001 60.2128L90.4859 37.5643L98.2134 40.1841C96.105 31.875 89.3092 23.9531 78.9553 20.8629C74.3201 19.4796 68.9101 19.0522 62.8354 20.0449C62.8848 20.3296 62.9319 20.6175 62.9767 20.9088C64.6088 31.5171 59.7361 40.4452 52.7496 47.0562C45.781 53.6504 36.5202 58.1468 28.7198 60.0319C24.8309 60.9718 21.1474 61.3014 18.2108 60.8127C15.3216 60.3319 12.5611 58.9131 11.8083 55.8642C11.115 53.0562 12.4051 49.7397 15.0321 46.1347C17.7326 42.4287 22.1791 37.9589 28.7433 32.657C39.2679 24.1564 49.1299 19.2043 58.0357 16.9602C56.1976 10.614 52.9326 7.12015 49.1331 5.41203C44.3698 3.27064 38.2303 3.6825 31.7628 5.8585C25.3388 8.01987 18.8902 11.8267 13.7472 16.0139ZM58.9175 20.8635C50.6935 22.9493 41.3933 27.5815 31.2567 35.7688C24.8209 40.9669 20.6737 45.1846 18.2648 48.4904C15.7824 51.8971 15.4475 53.9165 15.6917 54.9054C15.8764 55.6533 16.6159 56.4923 18.8674 56.867C21.0713 57.2338 24.1691 57.0166 27.7802 56.1439C34.9798 54.404 43.594 50.2129 50.0004 44.1508C56.3889 38.1056 60.3912 30.4087 59.0233 21.517C58.9894 21.2966 58.9541 21.0788 58.9175 20.8635Z"
+        })), /*#__PURE__*/React.createElement("p", {
+          className: "DESC text-slate-600 dark:text-slate-400"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `description`
+        }, description))), /*#__PURE__*/React.createElement("ul", {
+          className: "flex gap-8 items-center md:mt-6"
+        }, features.map((feature, index) => /*#__PURE__*/React.createElement("li", {
+          key: index,
+          className: "flex gap-2.5 items-center"
+        }, /*#__PURE__*/React.createElement(EditableIcon, {
+          propKey: `features_${index}_icon`,
+          icon: feature.icon,
+          iconLibrary: "FontAwesome",
+          className: "text-xl text-slate-900 dark:text-slate-50"
+        }), /*#__PURE__*/React.createElement("label", {
+          className: "TEXT-CONTENT text-slate-900 uppercase dark:text-slate-50 md:text-xl"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `features_${index}_text`
+        }, feature.text))))))), /*#__PURE__*/React.createElement("div", {
+          className: "relative w-full"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "absolute z-10 left-0 bg-gradient-to-r from-white w-1/4 h-full dark:from-black"
+        }), /*#__PURE__*/React.createElement(Marquee, {
+          autoFill: "true",
+          speed: 50
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "w-full h-auto flex items-center"
+        }, images.map((image, index) => /*#__PURE__*/React.createElement("div", {
+          className: "IMAGE w-80 h-56 mx-3 rounded-xl md:h-60"
+        }, /*#__PURE__*/React.createElement(EditableImg, {
+          isFCP: true,
+          key: index,
+          propKey: `images_${index}`,
+          className: "w-full h-full object-cover rounded-xl bg-slate-200 dark:bg-slate-700 aspect-[4/3]",
+          src: image,
+          alt: `images_${index}`
+        }))))), /*#__PURE__*/React.createElement("div", {
+          className: " absolute z-10 top-0 right-0 bg-gradient-to-l from-white w-1/4 h-full dark:from-black"
+        }))));
+      }
+      const node = /*#__PURE__*/React.createElement(ErrorBoundary, {
+        key: "l7iLC-nk3X4u9cMo2ZP8P"
+      }, /*#__PURE__*/React.createElement(Hero_28, {
+        "title": "Willkommen bei der Kanzlei Müller & Partner",
+        "description": "Ihre Experten für Rechtsberatung in den Bereichen Wirtschaftsrecht, Familienrecht und Strafrecht. Wir bieten Ihnen professionelle und vertrauenswürdige Unterstützung.",
+        "images": ["https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/71cc94b3-9075-4074-9953-1a55149c7694.jpeg?oldPrompt=Eine elegante Eingangshalle mit einem Empfangstresen, der Gastfreundschaft und Professionalität vermittelt (Gastfreundschaft:1.5), (Professionalität:1.5) - [Menschen, Farben]", "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/2638c5cb-336d-4b6e-87fb-4fb39182f3e8.jpeg?oldPrompt=Ein moderner Arbeitsplatz mit Computern und Büchern, der Kompetenz und Wissen repräsentiert (Kompetenz:1.5), (Wissen:1.5) - [Unordnung, Farben]", "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/137b72a5-6679-49f0-8782-bf0da485af6f.jpeg?oldPrompt=Ein minimalistischer Warteraum mit bequemen Sitzgelegenheiten, der Ruhe und Vertrauen ausstrahlt (Ruhe:1.5), (Vertrauen:1.5) - [Menschen, Farben]"],
+        "primaryButton": {
+          "icon": "fa-solid fa-arrow-right",
+          "textAttr": "text=Kontaktieren Sie uns&link="
+        },
+        "secondaryButton": {
+          "textAttr": "text=Mehr erfahren&link="
+        },
+        "features": [{
+          "icon": "fa-solid fa-scale-balanced",
+          "text": "Fachkompetenz"
+        }, {
+          "icon": "fa-solid fa-handshake",
+          "text": "Individuelle Beratung"
+        }, {
+          "icon": "fa-solid fa-shield-halved",
+          "text": "Diskretion"
+        }],
+        key: "l7iLC-nk3X4u9cMo2ZP8P"
+      }));
+      list.push(node);
+    } catch (error) {}
+    try {
+      function Team_02({
+        title = "Our Creative Minds",
+        description = "Meet the team that makes the magic happen. Each member of our studio brings a unique set of skills and expertise.",
+        buttonText = "Meet The Team",
+        buttonIcon = "fa-solid fa-arrow-right",
+        titleEmphasized = "Specialists",
+        teamMembers = [{
+          name: "Cymone Magdalina",
+          role: "Head Designer",
+          imageUrl: "https://source.unsplash.com/1000x700/?portrait,creative"
+        }, {
+          name: "Veronika Inaya",
+          role: "Senior Developer",
+          imageUrl: "https://source.unsplash.com/1000x700/?portrait,developer"
+        }, {
+          name: "Hyeon Vivek",
+          role: "Project Manager",
+          imageUrl: "https://source.unsplash.com/1000x700/?portrait,manager"
+        }, {
+          name: "Sophia Ella",
+          role: "Marketing Specialist",
+          imageUrl: "https://source.unsplash.com/1000x700/?portrait,marketer"
+        }]
+      }) {
+        return /*#__PURE__*/React.createElement("section", {
+          className: "py-12 sm:py-16 lg:py-20 bg-white dark:bg-black"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "px-6 mx-auto sm:px-8 lg:px-12 max-w-7xl"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "text-center lg:text-left lg:flex lg:items-end lg:justify-between"
+        }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+          className: "tracking-tighter text-sky-500 dark:text-slate-50"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "TITLE-PRIMARY text-5xl font-normal  md:text-6xl"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "title"
+        }, title)), /*#__PURE__*/React.createElement("span", {
+          className: "TITLE-SECONDARY text-5xl  sm:text-6xl md:text-7xl"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "titleEmphasized"
+        }, titleEmphasized))), /*#__PURE__*/React.createElement("p", {
+          className: "DESC max-w-md mx-auto lg:mx-0 mt-8 text-lg font-normal leading-8 text-slate-500 dark:text-slate-400"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "description"
+        }, description))), /*#__PURE__*/React.createElement("div", {
+          className: "mt-12 lg:mt-0"
+        }, /*#__PURE__*/React.createElement(EditableButton, {
+          className: "BTN-PRIMARY inline-flex items-center justify-center text-white bg-sky-500 font-medium border-0 py-2 xl:py-3 px-6 focus:outline-none hover:bg-sky-400 rounded-lg text-sm sm:text-base 2xl:text-lg transition-colors duration-500"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "buttonText"
+        }, buttonText), /*#__PURE__*/React.createElement(EditableIcon, {
+          propKey: "buttonIcon",
+          icon: buttonIcon,
+          iconLibrary: "FontAwesome",
+          className: "ml-2 text-lg text-white"
+        })))), /*#__PURE__*/React.createElement("div", {
+          className: "grid grid-cols-2 gap-6 sm:gap-8 mt-12 md:mt-16 text-center lg:grid-cols-4"
+        }, teamMembers.map((member, index) => /*#__PURE__*/React.createElement("div", {
+          className: "relative overflow-hidden rounded-lg group",
+          key: member.name
+        }, /*#__PURE__*/React.createElement(AnimateInView, {
+          type: "rise"
+        }, /*#__PURE__*/React.createElement(EditableImg, {
+          propKey: `teamMembers_${index}_imageUrl`,
+          className: "IMAGE rounded-lg bg-slate-100 w-full transition group-hover:scale-110 object-cover aspect-[3/5]",
+          src: member.imageUrl,
+          alt: member.name
+        }), /*#__PURE__*/React.createElement("div", {
+          className: "absolute inset-x-0 bottom-0 px-4 py-6 bg-gradient-to-t from-black to-transparent"
+        }, /*#__PURE__*/React.createElement("p", {
+          className: "TEXT-CONTENT text-base sm:text-2xl font-normal text-white"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `teamMembers_${index}_name`
+        }, member.name)), /*#__PURE__*/React.createElement("p", {
+          className: "DESC text-sm sm:text-md italic text-white opacity-60"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `teamMembers_${index}_role`
+        }, member.role)))))))));
+      }
+      const node = /*#__PURE__*/React.createElement(ErrorBoundary, {
+        key: "kq0MKMkwpdJ5uD1_G9-0f"
+      }, /*#__PURE__*/React.createElement(Team_02, {
+        "title": "Unser Team",
+        "description": "Lernen Sie unsere erfahrenen Anwälte kennen, die sich mit Engagement und Fachwissen für Ihre Interessen einsetzen.",
+        "buttonText": "Unser Team",
+        "buttonIcon": "fa-solid fa-arrow-right",
+        "titleEmphasized": "Experten",
+        "teamMembers": [{
+          "name": "Dr. Hans Müller",
+          "role": "Fachanwalt für Wirtschaftsrecht",
+          "imageUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/2f34ae67-17bd-465c-b24f-6c51e0bbdd2e.jpeg?oldPrompt=Teamfoto der Anwälte in einer Besprechung, mit Laptops und Dokumenten, (Teamarbeit betonend:1.4) - [unordentlicher Tisch] + [negativ: ablenkende Elemente]"
+        }, {
+          "name": "Sabine Schmidt",
+          "role": "Fachanwältin für Familienrecht",
+          "imageUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/e3f87d87-6c8c-4723-9e01-e5579076a1c8.jpeg?oldPrompt=Einzelporträts der Anwälte mit freundlichem Lächeln, vor einem neutralen Hintergrund, (Vertrauen erweckend:1.2) - [unnatürliche Posen] + [negativ: grelle Beleuchtung]"
+        }, {
+          "name": "Markus Weber",
+          "role": "Fachanwalt für Strafrecht",
+          "imageUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/fb093f50-2bbb-4337-9a44-a7429f4ae4be.jpeg?oldPrompt=Detailaufnahme von Händen, die ein Dokument unterschreiben, mit Fokus auf Professionalität, (Seriosität:1.5) - [unscharfe Details] + [negativ: unpassende Accessoires]"
+        }],
+        key: "kq0MKMkwpdJ5uD1_G9-0f"
+      }));
+      list.push(node);
+    } catch (error) {}
+    try {
+      function Gallery_03({
+        title = `Design Studio Essentials`,
+        description = `Enhance your creative environment with our curated selection of design studio essentials.`,
+        galleryInfo = [{
+          imageUrl: `https://source.unsplash.com/700x800/?design,studio`,
+          name: `Creative Workspace`,
+          category: `Studio Design`
+        }, {
+          imageUrl: `https://source.unsplash.com/700x800/?graphic,design`,
+          name: `Graphic Tools`,
+          category: `Graphic Design`
+        }, {
+          imageUrl: `https://source.unsplash.com/700x800/?artist,office`,
+          name: `Artistic Space`,
+          category: `Art Studio`
+        }, {
+          imageUrl: `https://source.unsplash.com/700x800/?interior,design`,
+          name: `Modern Interior`,
+          category: `Interior Design`
+        }, {
+          imageUrl: `https://source.unsplash.com/700x800/?architecture,office`,
+          name: `Architect's Desk`,
+          category: `Architecture`
+        }, {
+          imageUrl: `https://source.unsplash.com/700x800/?creative,tools`,
+          name: `Creative Tools`,
+          category: `Design Accessories`
+        }]
+      }) {
+        return /*#__PURE__*/React.createElement("section", {
+          className: "bg-white dark:bg-slate-800 px-6 py-24 md:px-8 md:py-32"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "mx-auto w-full max-w-7xl flex flex-col gap-12"
+        }, /*#__PURE__*/React.createElement(AnimateInView, {
+          type: "rise"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "w-full flex flex-col gap-6 text-center md:text-left"
+        }, /*#__PURE__*/React.createElement("h2", {
+          className: "TITLE-PRIMARY text-4xl font-semibold text-slate-900 dark:text-slate-50"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "title"
+        }, title)), /*#__PURE__*/React.createElement("p", {
+          className: "DESC font-normal text-slate-700 dark:text-slate-400"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "description"
+        }, description)))), /*#__PURE__*/React.createElement("div", {
+          className: "grid grid-cols-2 gap-4 text-center md:grid-cols-3 lg:grid-cols-6"
+        }, galleryInfo.map((info, index) => /*#__PURE__*/React.createElement(AnimateInView, {
+          type: "rise",
+          key: index
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "relative group"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "overflow-hidden aspect-w-3 aspect-h-4 flex justify-center items-center"
+        }, /*#__PURE__*/React.createElement(EditableImg, {
+          propKey: `galleryInfo_${index}_imageUrl`,
+          className: "IMAGE object-cover w-full h-full transition-all duration-300 origin-bottom group-hover:scale-110 aspect-[3/4]",
+          src: info.imageUrl,
+          alt: info.name
+        }), /*#__PURE__*/React.createElement("div", {
+          className: "absolute z-20  flex flex-col justify-center items-center"
+        }, /*#__PURE__*/React.createElement("h3", {
+          className: "TITLE-SECONDARY text-base font-bold text-white"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `galleryInfo_${index}_name`
+        }, info.name)), /*#__PURE__*/React.createElement("p", {
+          className: "DESC text-sm font-medium text-gray-300"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `galleryInfo_${index}_category`
+        }, info.category))), /*#__PURE__*/React.createElement("div", {
+          className: "absolute z-10 inset-0 bg-black/20  pointer-events-none"
+        }))))))));
+      }
+      const node = /*#__PURE__*/React.createElement(ErrorBoundary, {
+        key: "N_m80_btY4ESxk4viObC7"
+      }, /*#__PURE__*/React.createElement(Gallery_03, {
+        "title": "Unsere Kanzlei",
+        "description": "Ein Blick in unsere Kanzlei, die Atmosphäre und die Arbeitsumgebung, die unsere Professionalität widerspiegeln.",
+        "galleryInfo": [{
+          "imageUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/a504a862-e031-4ee8-9039-e8917e55d20e.jpeg?oldPrompt=Anwalt im Gespräch mit einem Kunden, (confident expression:1.3), (modern meeting room:1.2), (elegant furniture:1.4), (natural lighting:1.1), (professional atmosphere:1.5), -[casual clothing], -[cluttered room], -[low quality], -[blurry], -[distracting elements]",
+          "name": "Unser Büro",
+          "category": "Kanzlei"
+        }, {
+          "imageUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/92f1ae12-c8f4-436a-aba0-1d0cc95c7a53.jpeg?oldPrompt=Portrait eines professionellen Anwalts in einem modernen Büro, (serious expression:1.3), (sharp focus:1.2), (elegant suit:1.5), (minimalist background:1.2), (natural lighting:1.1), (sophisticated atmosphere:1.4), -[casual clothing], -[cluttered background], -[low quality], -[blurry], -[distracting elements]",
+          "name": "Beratungsgespräche",
+          "category": "Service"
+        }, {
+          "imageUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/2c108ac3-f895-4f63-ad71-0fc8577eb94b.jpeg?oldPrompt=Anwalt bei der Arbeit an einem Schreibtisch, (focused expression:1.3), (modern office setting:1.2), (elegant desk setup:1.4), (natural lighting:1.1), (professional atmosphere:1.5), -[casual clothing], -[cluttered desk], -[low quality], -[blurry], -[distracting elements]",
+          "name": "Rechtsbibliothek",
+          "category": "Ressourcen"
+        }, {
+          "imageUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/72a452ef-78be-44b6-923b-f0623f5baaf3.jpeg?oldPrompt=Anwalt mit einem Dokument in der Hand, (serious expression:1.3), (modern office background:1.2), (elegant suit:1.5), (natural lighting:1.1), (professional atmosphere:1.4), -[casual clothing], -[cluttered background], -[low quality], -[blurry], -[distracting elements]",
+          "name": "Gerichtssaal",
+          "category": "Vertretung"
+        }, {
+          "imageUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/efe87fc8-bd08-4028-9a83-0705c21188a2.jpeg?oldPrompt=Anwalt in einer Diskussion mit Kollegen, (serious expression:1.3), (modern office setting:1.2), (elegant suits:1.5), (natural lighting:1.1), (professional atmosphere:1.4), -[casual clothing], -[cluttered background], -[low quality], -[blurry], -[distracting elements]",
+          "name": "Teamarbeit",
+          "category": "Zusammenarbeit"
+        }, {
+          "imageUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/14642474-5b6a-44d8-8b3b-5e6585535b96.jpeg?oldPrompt=Anwalt bei einer Präsentation, (confident expression:1.3), (modern conference room:1.2), (elegant setup:1.4), (natural lighting:1.1), (professional atmosphere:1.5), -[casual clothing], -[cluttered room], -[low quality], -[blurry], -[distracting elements]",
+          "name": "Moderne Technologie",
+          "category": "Innovation"
+        }],
+        key: "N_m80_btY4ESxk4viObC7"
+      }));
+      list.push(node);
+    } catch (error) {}
+    try {
+      function Categories_03({
+        title = 'Explore Our Services',
+        description = 'Select from our broad range of creative offerings',
+        categories = [{
+          name: 'Brand',
+          imageUrl: 'https://source.unsplash.com/496x496/?brand,design'
+        }, {
+          name: 'Web',
+          imageUrl: 'https://source.unsplash.com/496x496/?web,development'
+        }, {
+          name: 'Advertising',
+          imageUrl: 'https://source.unsplash.com/496x496/?advertising,campaign'
+        }, {
+          name: 'Social-Media',
+          imageUrl: 'https://source.unsplash.com/496x496/?social,media'
+        }, {
+          name: 'Photography',
+          imageUrl: 'https://source.unsplash.com/496x496/?photography,studio'
+        }, {
+          name: 'Video',
+          imageUrl: 'https://source.unsplash.com/496x496/?video,production'
+        }],
+        allCategoriesText = 'text=View All Services&link=/',
+        allCategoriesTextIcon = 'fa-solid fa-arrow-right'
+      }) {
+        return /*#__PURE__*/React.createElement("section", {
+          className: "py-10 bg-white dark:bg-slate-600"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "max-w-7xl mx-auto px-4"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "flex flex-col  gap-6"
+        }, /*#__PURE__*/React.createElement("h2", {
+          className: "TITLE-PRIMARY text-5xl font-semibold text-slate-900 dark:text-white/90"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "title"
+        }, title)), /*#__PURE__*/React.createElement("p", {
+          className: "DESC text-base font-normal text-slate-700 dark:text-white/70"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "description"
+        }, description))), /*#__PURE__*/React.createElement("div", {
+          className: "grid grid-cols-2 gap-5 mt-16 sm:grid-cols-3 md:grid-cols-6"
+        }, categories.map((category, index) => /*#__PURE__*/React.createElement(AnimateInView, {
+          key: index,
+          type: "rise"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "min-h-full relative rounded-lg border border-black/5 hover:shadow-lg transition-all duration-300 dark:bg-slate-700"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "p-6"
+        }, /*#__PURE__*/React.createElement(EditableImg, {
+          propKey: `categories_${index}_imageUrl`,
+          className: "IMAGE w-24 h-24 mx-auto rounded-full bg-slate-100 aspect-[1/1] object-cover",
+          src: category.imageUrl,
+          alt: category.name
+        }), /*#__PURE__*/React.createElement("p", {
+          className: "mt-5 text-base font-bold  text-center text-slate-900 dark:text-white/90"
+        }, /*#__PURE__*/React.createElement(EditableButton, {
+          className: "text-inherit bg-transparent"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `categories_${index}_name`
+        }, category.name)))))))), /*#__PURE__*/React.createElement("div", {
+          className: "mt-8 text-center"
+        }, /*#__PURE__*/React.createElement(EditableButton, {
+          className: "BTN-PRIMARY inline-flex items-center px-6 py-2 xl:py-3 text-sm sm:text-base 2xl:text-lg text-slate-900 bg-white font-medium border border-black/10 dark:border-white/10 focus:outline-none hover:bg-slate-100 rounded-lg transition-colors duration-500 dark:hover:bg-slate-600 dark:bg-slate-800 dark:text-white"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "allCategoriesText"
+        }, allCategoriesText), /*#__PURE__*/React.createElement(EditableIcon, {
+          propKey: "allCategoriesTextIcon",
+          icon: allCategoriesTextIcon,
+          iconLibrary: "FontAwesome",
+          className: "text-base text-slate-900 dark:text-white ml-1.5"
+        })))));
+      }
+      const node = /*#__PURE__*/React.createElement(ErrorBoundary, {
+        key: "Ia_VWR_5dvyeCsKpAEZwb"
+      }, /*#__PURE__*/React.createElement(Categories_03, {
+        "title": "Unsere Fachgebiete",
+        "description": "Entdecken Sie unsere Spezialgebiete und die Dienstleistungen, die wir in diesen Bereichen anbieten.",
+        "categories": [{
+          "name": "Wirtschaftsrecht",
+          "imageUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/288c549d-fcad-4f01-b669-e6bd515511e7.jpeg?oldPrompt=ein professioneller Anwalt in einem modernen Büro, arbeitend an einem Laptop, mit einem professionellen Lächeln, in einem eleganten Anzug, (professional:1.5), (elegant:1.3), (modern:1.2), (sophisticated:1.2)"
+        }, {
+          "name": "Familienrecht",
+          "imageUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/dababbb1-7df1-4fcd-b16d-aa02fb0fb17f.jpeg?oldPrompt=ein Anwalt, der vor einem Gerichtssaal steht, mit einem selbstbewussten und professionellen Ausdruck, (professional:1.5), (confident:1.3), (modern:1.2), (sophisticated:1.2)"
+        }, {
+          "name": "Strafrecht",
+          "imageUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/2c1e52ac-68bb-4c01-b513-a8592231cb1e.jpeg?oldPrompt=ein Anwalt, der mit einem Kunden in einem Konferenzraum spricht, mit einem professionellen und vertrauenswürdigen Ausdruck, (professional:1.5), (trustworthy:1.3), (modern:1.2), (sophisticated:1.2)"
+        }],
+        "allCategoriesText": "text=Alle Fachgebiete&link=",
+        "allCategoriesTextIcon": "fa-solid fa-arrow-right",
+        key: "Ia_VWR_5dvyeCsKpAEZwb"
+      }));
+      list.push(node);
+    } catch (error) {}
+    try {
+      function Contact_08({
+        title = 'Get in Touch',
+        description = 'Explore how our design solutions can empower your creativity.',
+        contactOptions = [{
+          id: 1,
+          icon: 'fa-solid fa-message',
+          title: 'Design Consultation',
+          description: 'Discuss your project ideas and how we can bring them to life.',
+          textAttr: 'text=Start a conversation&link=/',
+          buttonIcon: 'fa-solid fa-arrow-right'
+        }, {
+          id: 2,
+          icon: 'fa-solid fa-bug',
+          title: 'Technical Support',
+          description: 'Get help with any technical issues or inquiries.',
+          textAttr: 'text=Get Support&link=/',
+          buttonIcon: 'fa-solid fa-arrow-right'
+        }, {
+          id: 3,
+          icon: 'fa-solid fa-desktop',
+          title: 'Project Collaboration',
+          description: 'Collaborate with us on your upcoming design projects.',
+          textAttr: 'text=Collaborate now&link=/',
+          buttonIcon: 'fa-solid fa-arrow-right'
+        }]
+      }) {
+        return /*#__PURE__*/React.createElement("div", {
+          className: "isolate bg-white px-6 py-16 sm:py-20 lg:px-8 dark:bg-slate-800"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "mx-auto max-w-2xl sm:text-center"
+        }, /*#__PURE__*/React.createElement("h2", {
+          className: "TITLE-PRIMARY text-3xl font-bold tracking-tight text-slate-800 sm:text-4xl dark:text-white/80"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "title"
+        }, title)), /*#__PURE__*/React.createElement("p", {
+          className: "DESC mt-2 text-lg leading-8 text-slate-700 dark:text-white/60"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "description"
+        }, description))), /*#__PURE__*/React.createElement("div", {
+          className: "mx-auto mt-20 max-w-lg space-y-16"
+        }, contactOptions.map((option, index) => /*#__PURE__*/React.createElement(AnimateInView, {
+          key: option.id,
+          type: "rise"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "flex gap-x-6"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-sky-500"
+        }, /*#__PURE__*/React.createElement(EditableIcon, {
+          propKey: `contactOptions_${index}_icon`,
+          icon: option.icon,
+          iconLibrary: "FontAwesome",
+          className: "text-lg text-white",
+          "aria-hidden": "true"
+        })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+          className: "TITLE-SECONDARY text-base font-semibold leading-7 text-slate-900 dark:text-white/80"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `contactOptions_${index}_title`
+        }, option.title)), /*#__PURE__*/React.createElement("p", {
+          className: "DESC mt-2 leading-7 text-slate-600 dark:text-white/60"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `contactOptions_${index}_description`
+        }, option.description)), /*#__PURE__*/React.createElement("p", {
+          className: "mt-4"
+        }, /*#__PURE__*/React.createElement(EditableButton, {
+          className: "TEXT-LINK text-sm flex items-center gap-1 group font-semibold leading-6 text-sky-400 dark:text-sky-400 dark:hover:text-white"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `contactOptions_${index}_textAttr`
+        }, option.textAttr), /*#__PURE__*/React.createElement(EditableIcon, {
+          propKey: `contactOptions_${index}_buttonIcon`,
+          icon: option.buttonIcon,
+          className: "group-hover:translate-x-1 transition-all duration-300"
+        })))))))));
+      }
+      const node = /*#__PURE__*/React.createElement(ErrorBoundary, {
+        key: "E-lBatY3XEnEZRplbTisK"
+      }, /*#__PURE__*/React.createElement(Contact_08, {
+        "title": "Kontaktieren Sie uns",
+        "description": "Nehmen Sie Kontakt auf und vereinbaren Sie einen Termin für eine persönliche Beratung.",
+        "contactOptions": [{
+          "id": 1,
+          "icon": "fa-solid fa-phone",
+          "title": "Telefonische Beratung",
+          "description": "Rufen Sie uns an, um direkt mit einem Anwalt zu sprechen.",
+          "textAttr": "text=Anrufen&link=",
+          "buttonIcon": "fa-solid fa-arrow-right"
+        }, {
+          "id": 2,
+          "icon": "fa-solid fa-envelope",
+          "title": "E-Mail-Kontakt",
+          "description": "Schreiben Sie uns eine E-Mail und wir melden uns umgehend bei Ihnen.",
+          "textAttr": "text=E-Mail senden&link=",
+          "buttonIcon": "fa-solid fa-arrow-right"
+        }, {
+          "id": 3,
+          "icon": "fa-solid fa-calendar-days",
+          "title": "Terminvereinbarung",
+          "description": "Vereinbaren Sie einen Termin für ein persönliches Gespräch in unserer Kanzlei.",
+          "textAttr": "text=Termin buchen&link=",
+          "buttonIcon": "fa-solid fa-arrow-right"
+        }],
+        key: "E-lBatY3XEnEZRplbTisK"
+      }));
+      list.push(node);
+    } catch (error) {}
+    try {
+      function FAQ_02({
+        introTitle = `FAQ`,
+        sectionTitle = `Frequently Asked Questions`,
+        sectionDescription = `Find answers to the most common inquiries regarding our design studio.`,
+        faqItems = [{
+          question: `Does this studio support custom design requests?`,
+          answer: `Our studio welcomes custom design requests. We thrive on creating unique experiences tailored to our client's needs.`
+        }, {
+          question: `What is the typical timeline for a project?`,
+          answer: `The timeline varies depending on project complexity, but we always aim for efficiency without compromising on quality.`
+        }, {
+          question: `How do I get started with a project?`,
+          answer: `Reach out to us with your ideas, and we'll guide you through our process to bring those concepts to life.`
+        }],
+        allQuestionsTextAttr = `text=Check all common questions&link=/`
+      }) {
+        return /*#__PURE__*/React.createElement("section", {
+          className: "py-10 bg-white dark:bg-slate-800"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "max-w-7xl mx-auto px-4 py-10"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "grid grid-cols-1 gap-16 md:grid-cols-2"
+        }, /*#__PURE__*/React.createElement(AnimateInView, {
+          type: "rise"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "flex flex-col gap-6"
+        }, /*#__PURE__*/React.createElement("p", {
+          className: "font-semibold tracking-widest text-sky-500 uppercase"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "introTitle"
+        }, introTitle)), /*#__PURE__*/React.createElement("h2", {
+          className: "TITLE-PRIMARY text-5xl font-semibold text-slate-900 dark:text-slate-50"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "sectionTitle"
+        }, sectionTitle)), /*#__PURE__*/React.createElement("p", {
+          className: "DESC text-base font-normal text-slate-600 dark:text-slate-400"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "sectionDescription"
+        }, sectionDescription)))), /*#__PURE__*/React.createElement("div", {
+          className: "flex flex-col gap-10"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "space-y-8"
+        }, faqItems.map((faq, index) => /*#__PURE__*/React.createElement(AnimateInView, {
+          key: index,
+          type: "rise"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "bg-white dark:bg-slate-700 border border-black/10 dark:border-white/10 rounded-lg hover:-translate-y-1  hover:shadow-xl hover:shadow-black/5 transition-all duration-300"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "p-6 flex flex-col gap-6"
+        }, /*#__PURE__*/React.createElement("p", {
+          className: "TITLE-SECONDARY text-xl font-semibold text-slate-900 dark:text-slate-50"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `faqItems_${index}_question`
+        }, faq.question)), /*#__PURE__*/React.createElement("p", {
+          className: "TEXT-CONTENT text-base font-normal text-slate-600 dark:text-slate-400"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `faqItems_${index}_answer`
+        }, faq.answer))))))), /*#__PURE__*/React.createElement(AnimateInView, {
+          type: "rise"
+        }, /*#__PURE__*/React.createElement(EditableButton, {
+          className: "TEXT-LINK flex group items-center gap-1 text-base font-semibold text-sky-500 hover:text-sky-400 focus:text-sky-500 "
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "allQuestionsTextAttr"
+        }, allQuestionsTextAttr), /*#__PURE__*/React.createElement("span", {
+          className: "group-hover:translate-x-1 transition-all duration-300"
+        }, "\u2192")))))));
+      }
+      const node = /*#__PURE__*/React.createElement(ErrorBoundary, {
+        key: "YsJVvZ-mzbOmHWyRAnu1S"
+      }, /*#__PURE__*/React.createElement(FAQ_02, {
+        "introTitle": "FAQ",
+        "sectionTitle": "Häufig gestellte Fragen",
+        "sectionDescription": "Hier finden Sie Antworten auf die häufigsten Fragen zu unseren Dienstleistungen und der Zusammenarbeit mit unserer Kanzlei.",
+        "faqItems": [{
+          "question": "Welche Rechtsgebiete deckt Ihre Kanzlei ab?",
+          "answer": "Wir sind spezialisiert auf Wirtschaftsrecht, Familienrecht und Strafrecht."
+        }, {
+          "question": "Wie kann ich einen Beratungstermin vereinbaren?",
+          "answer": "Sie können uns telefonisch, per E-Mail oder über unser Online-Formular kontaktieren, um einen Termin zu vereinbaren."
+        }, {
+          "question": "Bieten Sie auch Online-Beratungen an?",
+          "answer": "Ja, wir bieten auch Online-Beratungen via Video-Call an, um Ihnen flexibel zur Verfügung zu stehen."
+        }],
+        "allQuestionsTextAttr": "text=Alle Fragen anzeigen&link=",
+        key: "YsJVvZ-mzbOmHWyRAnu1S"
+      }));
+      list.push(node);
+    } catch (error) {}
+    routerList.push({
+      path: "startseite",
+      element: /*#__PURE__*/React.createElement(Layout, null, list)
+    });
+  }
+  {
+    const list = [];
+    try {
+      function Contact_07({
+        title = "Get in Touch",
+        description = "We're open for any suggestion or just to have a chat",
+        officeLocations = [{
+          city: "Los Angeles",
+          address: "4556 Brendan Ferry, Los Angeles, CA 90210"
+        }, {
+          city: "New York",
+          address: "886 Walter Street, New York, NY 12345"
+        }, {
+          city: "Toronto",
+          address: "7363 Cynthia Pass, Toronto, ON N3Y 4H8"
+        }, {
+          city: "London",
+          address: "114 Cobble Lane, London N1 2EF"
+        }]
+      }) {
+        return /*#__PURE__*/React.createElement("div", {
+          className: "bg-white dark:bg-slate-800 py-16 sm:py-20 w-full"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "mx-auto max-w-7xl px-6 lg:px-8"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "mx-auto max-w-2xl lg:mx-0"
+        }, /*#__PURE__*/React.createElement("h2", {
+          className: "TITLE-PRIMARY text-3xl font-bold tracking-tight text-slate-900 dark:text-white/90"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "title"
+        }, title)), /*#__PURE__*/React.createElement("p", {
+          className: "DESC mt-6 text-lg leading-8 text-slate-700 dark:text-white/80"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "description"
+        }, description))), /*#__PURE__*/React.createElement("div", {
+          className: "mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 text-base leading-7 sm:grid-cols-2 sm:gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-4"
+        }, officeLocations.map((location, index) => /*#__PURE__*/React.createElement(AnimateInView, {
+          key: index,
+          type: "rise"
+        }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+          className: "TITLE-SECONDARY border-l border-black/10 dark:border-white/10 pl-6 font-semibold text-slate-900 dark:text-white/90"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `officeLocations_${index}_city`
+        }, location.city)), /*#__PURE__*/React.createElement("address", {
+          className: "DESC border-l border-black/10 dark:border-white/10 pl-6 pt-2 not-italic text-slate-600 dark:text-white/80"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `officeLocations_${index}_address`
+        }, location.address))))))));
+      }
+      const node = /*#__PURE__*/React.createElement(ErrorBoundary, {
+        key: "GhyERaMPssgdlZX7OAVRq"
+      }, /*#__PURE__*/React.createElement(Contact_07, {
+        "title": "Kontaktieren Sie uns",
+        "description": "Wir sind für Ihre Anliegen da und freuen uns auf Ihre Nachricht.",
+        "officeLocations": [{
+          "city": "Berlin",
+          "address": "Unter den Linden 17, 10117 Berlin"
+        }, {
+          "city": "München",
+          "address": "Maximilianstraße 35, 80539 München"
+        }, {
+          "city": "Hamburg",
+          "address": "Neuer Wall 80, 20354 Hamburg"
+        }, {
+          "city": "Frankfurt",
+          "address": "Mainzer Landstraße 55, 60329 Frankfurt am Main"
+        }],
+        key: "GhyERaMPssgdlZX7OAVRq"
+      }));
+      list.push(node);
+    } catch (error) {}
+    try {
+      function Map_01({
+        locationName = "New York",
+        title = "Design Studio Location",
+        description = "Explore our workspace through the interactive map below and get a feel for the creative environment where we bring innovative designs to life.",
+        locationIcon = "fa-solid fa-location-dot"
+      }) {
+        const encodedLocation = encodeURIComponent(locationName);
+        const mapLocation = `https://maps.google.com/maps?width=100%&height=600&hl=en&q=${encodedLocation}&ie=UTF8&t=&z=14&iwloc=B&output=embed`;
+        return /*#__PURE__*/React.createElement("div", {
+          className: "relative w-full"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "max-w-7xl mx-auto py-28 px-4 "
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "absolute inset-0 w-full h-200"
+        }, /*#__PURE__*/React.createElement("iframe", {
+          className: "w-full h-full",
+          src: mapLocation,
+          style: {
+            filter: "grayscale(1) contrast(1.2)",
+            opacity: 0.4
+          },
+          allowFullScreen: true,
+          loading: "lazy",
+          title: `Map of ${locationName}`,
+          scrolling: "no"
+        })), /*#__PURE__*/React.createElement("div", {
+          className: "w-fit md:w-1/2 gap-8 bg-white/70 dark:bg-black/70 shadow backdrop-blur rounded-2xl py-10 px-10"
+        }, /*#__PURE__*/React.createElement("h1", {
+          className: "TITLE-PRIMARY text-3xl font-semibold text-slate-900 dark:text-white mb-4"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "title"
+        }, title)), /*#__PURE__*/React.createElement("p", {
+          className: "DESC text-base font-normal text-slate-700 dark:text-white/70 mb-4"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "description"
+        }, description)), /*#__PURE__*/React.createElement("p", {
+          className: "flex items-center text-sky-600"
+        }, /*#__PURE__*/React.createElement(EditableIcon, {
+          propKey: "locationIcon",
+          icon: locationIcon,
+          iconLibrary: "FontAwesome",
+          className: "TEXT-LINK text-base text-sky-600 mr-2"
+        }), /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "locationName"
+        }, locationName)))));
+      }
+      const node = /*#__PURE__*/React.createElement(ErrorBoundary, {
+        key: "w7PDlLCQx6qet9cG068cM"
+      }, /*#__PURE__*/React.createElement(Map_01, {
+        "locationName": "Berlin",
+        "title": "Unsere Kanzlei in Berlin",
+        "description": "Finden Sie uns leicht mit der interaktiven Karte und planen Sie Ihren Besuch.",
+        "locationIcon": "fa-solid fa-location-dot",
+        key: "w7PDlLCQx6qet9cG068cM"
+      }));
+      list.push(node);
+    } catch (error) {}
+    try {
+      function CallToAction_03({
+        title = `Explore the World of our Design Studio`,
+        description = `Discover our handcrafted designs and creative solutions`,
+        primaryButtonText = `Try For Free`,
+        primaryButtonIcon = `fa-solid fa-circle-play`,
+        secondaryButtonText = `Contact Sales`,
+        secondaryButtonIcon = `fa-solid fa-comments`,
+        loginText = `Already have an account?`,
+        loginLinkText = `Log in`
+      }) {
+        return /*#__PURE__*/React.createElement("section", {
+          className: "py-10 bg-slate-50 dark:bg-slate-800"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "max-w-7xl mx-auto py-10 px-4"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "text-center flex flex-col items-center gap-16"
+        }, /*#__PURE__*/React.createElement(AnimateInView, {
+          type: "rise"
+        }, /*#__PURE__*/React.createElement("h2", {
+          className: "TITLE-PRIMARY text-4xl font-semibold text-slate-900 dark:text-white"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "title"
+        }, title)), /*#__PURE__*/React.createElement("p", {
+          className: "DESC mt-6 text-xl font-medium text-slate-600 dark:text-white/70"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "description"
+        }, description))), /*#__PURE__*/React.createElement(AnimateInView, {
+          type: "rise"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "flex flex-col items-center gap-y-5"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "flex items-center justify-center gap-5"
+        }, /*#__PURE__*/React.createElement(EditableButton, {
+          className: "BTN-PRIMARY inline-flex items-center justify-center text-white bg-sky-500 font-medium border-0  h-10 md:h-12 px-6 focus:outline-none hover:bg-sky-400 rounded-lg text-sm sm:text-base 2xl:text-lg transition-colors duration-500"
+        }, /*#__PURE__*/React.createElement(EditableIcon, {
+          propKey: "primaryButtonIcon",
+          icon: primaryButtonIcon,
+          iconLibrary: "FontAwesome",
+          className: "text-lg text-white mr-2"
+        }), /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "primaryButtonText"
+        }, primaryButtonText)), /*#__PURE__*/React.createElement(EditableButton, {
+          className: "BTN-SECONDARY inline-flex items-center justify-center text-slate-900 bg-white font-medium border border-black/10 dark:border-white/10 h-10 md:h-12 px-6 focus:outline-none hover:bg-slate-100 rounded-lg text-sm sm:text-base 2xl:text-lg transition-colors duration-500 dark:hover:bg-slate-600 dark:bg-slate-800 dark:text-white"
+        }, /*#__PURE__*/React.createElement(EditableIcon, {
+          propKey: "secondaryButtonIcon",
+          icon: secondaryButtonIcon,
+          iconLibrary: "FontAwesome",
+          className: "text-lg text-slate-900 dark:text-white mr-2"
+        }), /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "secondaryButtonText"
+        }, secondaryButtonText))), /*#__PURE__*/React.createElement("p", {
+          className: "TEXT-CONTENT flex items-center gap-3 text-base text-slate-600 dark:text-white/70"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "loginText"
+        }, loginText), /*#__PURE__*/React.createElement(EditableButton, {
+          className: "TEXT-LINK text-sky-500 hover:text-sky-400 focus:text-sky-500 dark:hover:text-sky-400 dark:focus:text-sky-500"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "loginLinkText"
+        }, loginLinkText))))))));
+      }
+      const node = /*#__PURE__*/React.createElement(ErrorBoundary, {
+        key: "ieM8oNigzKzr8cT89SizW"
+      }, /*#__PURE__*/React.createElement(CallToAction_03, {
+        "title": "Schnelle Kontaktaufnahme",
+        "description": "Kontaktieren Sie uns direkt per Telefon oder E-Mail für eine unverbindliche Beratung.",
+        "primaryButtonText": "text=Anrufen&link=",
+        "primaryButtonIcon": "fa-solid fa-phone",
+        "secondaryButtonText": "text=E-Mail senden&link=",
+        "secondaryButtonIcon": "fa-solid fa-envelope",
+        "loginText": "Bereits Kunde?",
+        "loginLinkText": "text=Login&link=",
+        key: "ieM8oNigzKzr8cT89SizW"
+      }));
+      list.push(node);
+    } catch (error) {}
+    try {
+      function Table_01({
+        title = `Packages`,
+        description = `Meet the creative minds behind our successful projects.`,
+        tr = [`Package`, `Project`, `Detail`, `Price`],
+        data = [{
+          imgUrl: `https://source.unsplash.com/600x600/?branding,logo`,
+          col1: `Starter Package`,
+          col2: `Logo & Brand Identity`,
+          col3: `Up to 3 Concepts`,
+          col4: `5 Revisions`,
+          col5: `$499`
+        }, {
+          imgUrl: `https://source.unsplash.com/600x600/?website,design`,
+          col1: `Professional Website`,
+          col2: `Responsive Design`,
+          col3: `Up to 10 Pages`,
+          col4: `SEO & Analytics Setup`,
+          col5: `$2,999`
+        }, {
+          imgUrl: `https://source.unsplash.com/600x600/?mobile,app`,
+          col1: `Mobile App Design`,
+          col2: `iOS & Android`,
+          col3: `User Interface Design`,
+          col4: `User Experience Review`,
+          col5: `$4,999`
+        }]
+      }) {
+        return /*#__PURE__*/React.createElement("div", {
+          className: "w-full max-w-7xl mx-auto py-10 px-4"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "max-w-lg"
+        }, /*#__PURE__*/React.createElement("h3", {
+          className: "TITLE-PRIMARY text-4xl font-extrabold text-lg sm:text-2xl dark:text-white/80"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `title`
+        }, title)), /*#__PURE__*/React.createElement("p", {
+          className: "DESC text-slate-700 mt-2 text-base dark:text-white/70"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `description`
+        }, description))), /*#__PURE__*/React.createElement("div", {
+          className: "mt-8 shadow-sm border border-black/10 dark:border-white/10 rounded-lg overflow-x-auto"
+        }, /*#__PURE__*/React.createElement("table", {
+          className: "w-full table-auto text-sm text-left"
+        }, /*#__PURE__*/React.createElement("thead", {
+          className: "bg-white dark:bg-slate-800 text-slate-900 dark:text-white/80 font-medium border-b border-black/10 dark:border-white/10"
+        }, /*#__PURE__*/React.createElement("tr", null, tr.map((item, idx) => /*#__PURE__*/React.createElement("th", {
+          key: idx,
+          className: "py-3 px-6"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `tr_${idx}`
+        }, item))))), /*#__PURE__*/React.createElement("tbody", {
+          className: "text-slate-900 dark:text-white/70 divide-y divide-black/10 dark:divide-white/10"
+        }, data.map((item, idx) => /*#__PURE__*/React.createElement("tr", {
+          key: idx
+        }, /*#__PURE__*/React.createElement("td", {
+          className: "flex items-center gap-x-3 py-3 px-6 whitespace-nowrap"
+        }, /*#__PURE__*/React.createElement(EditableImg, {
+          propKey: `data_${idx}_imgUrl`,
+          className: "IMAGE w-10 h-10 rounded-full bg-slate-100 object-cover aspect-[1/1]",
+          src: item.imgUrl,
+          alt: item.imgUrl
+        }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+          className: "block text-slate-900 dark:text-white/80 text-sm font-medium"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `data_${idx}_col1`
+        }, item.col1)), /*#__PURE__*/React.createElement("span", {
+          className: "block text-slate-700 dark:text-white/70 text-xs"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `data_${idx}_col2`
+        }, item.col2)))), /*#__PURE__*/React.createElement("td", {
+          className: "px-6 py-4 whitespace-nowrap"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `data_${idx}_col3`
+        }, item.col3)), /*#__PURE__*/React.createElement("td", {
+          className: "px-6 py-4 whitespace-nowrap"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `data_${idx}_col4`
+        }, item.col4)), /*#__PURE__*/React.createElement("td", {
+          className: "px-6 py-4 whitespace-nowrap"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `data_${idx}_col5`
+        }, item.col5))))))));
+      }
+      const node = /*#__PURE__*/React.createElement(ErrorBoundary, {
+        key: "gQUxsPcqGUw_PyqMku6gk"
+      }, /*#__PURE__*/React.createElement(Table_01, {
+        "title": "Öffnungszeiten",
+        "description": "Unsere Kanzlei ist zu folgenden Zeiten für Sie da:",
+        "tr": ["Tag", "Öffnungszeiten"],
+        "data": [{
+          "imgUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/ddfa3490-9ffa-4f38-b6ae-2b121bbda806.jpeg?oldPrompt=Eine moderne Wanduhr mit einem Stapel geordneter Dokumente, (elegant:1.5) - [unpassende Farben] + [negativ: unklare Darstellung]",
+          "col1": "Montag - Freitag",
+          "col2": "09:00 - 18:00 Uhr"
+        }, {
+          "imgUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/c6386de6-e9d7-4d35-8013-3bfd23c38dfa.jpeg?oldPrompt=Ein minimalistischer Schreibtisch mit einem geöffneten Kalender und einer Tasse Kaffee, (sophisticated:1.5) - [überladene Dekoration] + [negativ: unprofessionelle Atmosphäre]",
+          "col1": "Samstag",
+          "col2": "Geschlossen"
+        }, {
+          "imgUrl": "https://cdn.a1.art/assets/images/app_1811317900177637378/1811317900181831681/235c78ec-894e-492f-a562-c7220a6b44c1.jpeg?oldPrompt=Eine elegante Tischoberfläche mit einem modernen Tablet, das die Öffnungszeiten anzeigt, (professionell:1.5) - [veraltete Technologie] + [negativ: unordentlicher Hintergrund]",
+          "col1": "Sonntag",
+          "col2": "Geschlossen"
+        }],
+        key: "gQUxsPcqGUw_PyqMku6gk"
+      }));
+      list.push(node);
+    } catch (error) {}
+    try {
+      function LogoClouds_03({
+        logos = ["https://www.uilogos.co/logos/type/acme-black.png", "https://www.uilogos.co/logos/type/aven-black.png", "https://www.uilogos.co/logos/type/fox-hub-black.png", "https://www.uilogos.co/logos/type/goldline-black.png", "https://www.uilogos.co/logos/type/muzica-black.png"]
+      }) {
+        return /*#__PURE__*/React.createElement("div", {
+          className: "bg-white py-16 sm:py-20 dark:bg-slate-800"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "mx-auto max-w-7xl px-6 lg:px-8"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "mx-auto flex flex-wrap justify-center items-center gap-x-8 gap-y-10 sm:gap-x-10"
+        }, logos.map((logoUrl, index) => /*#__PURE__*/React.createElement(AnimateInView, {
+          type: "rise",
+          key: `logo_${index}`
+        }, /*#__PURE__*/React.createElement(EditableImg, {
+          propKey: `logos_${index}`,
+          className: "IMAGE max-h-10 w-full object-contain aspect-[158/48]",
+          src: logoUrl,
+          alt: `logo_${index}`
+        }))))));
+      }
+      const node = /*#__PURE__*/React.createElement(ErrorBoundary, {
+        key: "zveL6aWeqSdC3fP-fqv0H"
+      }, /*#__PURE__*/React.createElement(LogoClouds_03, {
+        "logos": ["https://www.uilogos.co/logos/type/facebook-black.png", "https://www.uilogos.co/logos/type/twitter-black.png", "https://www.uilogos.co/logos/type/linkedin-black.png", "https://www.uilogos.co/logos/type/instagram-black.png", "https://www.uilogos.co/logos/type/youtube-black.png"],
+        key: "zveL6aWeqSdC3fP-fqv0H"
+      }));
+      list.push(node);
+    } catch (error) {}
+    try {
+      function FAQ_08({
+        headerTitle = "FAQs",
+        faqs = [{
+          question: "What is the difference between the Free and Paid versions?",
+          answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam."
+        }, {
+          question: "Do you have student or non-profit discounts?",
+          answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam."
+        }, {
+          question: "How is the price determined?",
+          answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam."
+        }, {
+          question: "Do I need coding knowledge to use this product?",
+          answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam."
+        }, {
+          question: "Is there a way to become an Affiliate reseller?",
+          answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam."
+        }, {
+          question: "What forms of payment do you accept?",
+          answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam."
+        }]
+      }) {
+        return /*#__PURE__*/React.createElement("section", {
+          className: "bg-white dark:bg-slate-900 px-6 py-24 md:px-8 md:py-32"
+        }, /*#__PURE__*/React.createElement(AnimateInView, null, /*#__PURE__*/React.createElement("div", {
+          className: "w-full max-w-7xl mx-auto flex flex-col gap-12"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: "headerTitle",
+          className: "TITLE-PRIMARY text-slate-900 dark:text-slate-50 font-bold text-4xl"
+        }, headerTitle), /*#__PURE__*/React.createElement("div", {
+          className: "md:flex md:space-x-12 space-y-8 md:space-y-0"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "w-full md:w-1/2 space-y-8"
+        }, faqs.slice(0, 3).map((faq, index) => /*#__PURE__*/React.createElement("div", {
+          key: index,
+          className: "space-y-2"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `faqs_${index}_question`,
+          className: "TITLE-SECONDARY text-slate-900 dark:text-slate-50 text-xl font-medium"
+        }, faq.question), /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `faqs_${index}_answer`,
+          className: "DESC text-slate-600 dark:text-slate-400"
+        }, faq.answer)))), /*#__PURE__*/React.createElement("div", {
+          className: "w-full md:w-1/2 space-y-8"
+        }, faqs.slice(3).map((faq, index) => /*#__PURE__*/React.createElement("div", {
+          key: index + 3,
+          className: "space-y-2"
+        }, /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `faqs_${index + 3}_question`,
+          className: "TITLE-SECONDARY text-slate-900 dark:text-slate-50 text-xl font-medium"
+        }, faq.question), /*#__PURE__*/React.createElement(EditableText, {
+          propKey: `faqs_${index + 3}_answer`,
+          className: "DESC text-slate-600 dark:text-slate-400"
+        }, faq.answer))))))));
+      }
+      const node = /*#__PURE__*/React.createElement(ErrorBoundary, {
+        key: "UHXogARRyWDfeJa0J37wR"
+      }, /*#__PURE__*/React.createElement(FAQ_08, {
+        "headerTitle": "Häufige Fragen",
+        "faqs": [{
+          "question": "Wie kann ich einen Termin vereinbaren?",
+          "answer": "Sie können uns telefonisch oder per E-Mail kontaktieren, um einen Termin zu vereinbaren."
+        }, {
+          "question": "Welche Zahlungsmethoden akzeptieren Sie?",
+          "answer": "Wir akzeptieren Barzahlung, Überweisung und Kreditkartenzahlungen."
+        }, {
+          "question": "Gibt es Parkmöglichkeiten in der Nähe?",
+          "answer": "Ja, es gibt mehrere Parkhäuser in der Nähe unserer Kanzlei."
+        }, {
+          "question": "Bieten Sie Online-Beratungen an?",
+          "answer": "Ja, wir bieten auch Online-Beratungen per Videoanruf an."
+        }, {
+          "question": "Wie lange dauert eine Erstberatung?",
+          "answer": "Eine Erstberatung dauert in der Regel 30 bis 60 Minuten."
+        }, {
+          "question": "Gibt es eine Gebühr für die Erstberatung?",
+          "answer": "Die Erstberatung ist kostenlos und unverbindlich."
+        }],
+        key: "UHXogARRyWDfeJa0J37wR"
+      }));
+      list.push(node);
+    } catch (error) {}
+    routerList.push({
+      path: "kontakt",
+      element: /*#__PURE__*/React.createElement(Layout, null, list)
+    });
+  }
+  try {
+    function Footer_08({
+      companyCopyright = "© 2023 Design Studio Works",
+      links = [{
+        textAttr: "text=About Us&link=/"
+      }, {
+        textAttr: "text=Our Services&link=/"
+      }, {
+        textAttr: "text=Privacy Policy&link=/"
+      }, {
+        textAttr: "text=Terms Conditions&link=/"
+      }, {
+        textAttr: "text=Support&link=/"
+      }],
+      socialIcons = [{
+        icon: "fa-brands fa-twitter",
+        href: "#"
+      }, {
+        icon: "fa-brands fa-facebook-f",
+        href: "#"
+      }, {
+        icon: "fa-brands fa-instagram",
+        href: "#"
+      }]
+    }) {
+      return /*#__PURE__*/React.createElement("section", {
+        className: "py-10 bg-black"
+      }, /*#__PURE__*/React.createElement(AnimateInView, {
+        type: "rise"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "mx-auto px-4 max-w-7xl py-10 flex flex-col items-center gap-12"
+      }, /*#__PURE__*/React.createElement(EditableText, {
+        propKey: "companyCopyright",
+        className: "DESC ml-2  text-sm text-white/60"
+      }, companyCopyright), /*#__PURE__*/React.createElement("div", {
+        className: "flex flex-col gap-8 items-center md:flex-row"
+      }, /*#__PURE__*/React.createElement("ul", {
+        className: "flex flex-col items-center gap-8 sm:flex-row"
+      }, links.map((link, index) => /*#__PURE__*/React.createElement("li", {
+        key: index
+      }, /*#__PURE__*/React.createElement(EditableButton, {
+        className: "TEXT-LINK text-sm text-white hover:text-sky-500 focus:text-sky-500  dark:hover:text-sky-500 dark:focus:text-sky-500"
+      }, /*#__PURE__*/React.createElement(EditableText, {
+        propKey: `links_${index}_textAttr`
+      }, link.textAttr))))), /*#__PURE__*/React.createElement("div", {
+        className: "w-full h-px bg-white/20 dark:bg-white/10 md:w-px md:h-6"
+      }), /*#__PURE__*/React.createElement("ul", {
+        className: "flex items-center gap-8"
+      }, socialIcons.map((icon, index) => /*#__PURE__*/React.createElement("li", {
+        key: index,
+        href: icon.href
+      }, /*#__PURE__*/React.createElement(EditableButton, {
+        className: "TEXT-LINK text-white"
+      }, /*#__PURE__*/React.createElement(EditableIcon, {
+        propKey: `socialIcons_${index}_icon`,
+        icon: icon.icon,
+        iconLibrary: "FontAwesome",
+        className: "text-lg  hover:text-sky-500 focus:text-sky-500 dark:hover:text-sky-500 dark:focus:text-sky-500"
+      })))))))));
+    }
+    Footer = /*#__PURE__*/React.createElement(ErrorBoundary, {
+      key: "WIDCTdokdBfnERuNi1kHY"
+    }, /*#__PURE__*/React.createElement(Footer_08, {
+      "companyCopyright": "© 2023 Kanzlei Landingpage. Alle Rechte vorbehalten.",
+      "links": [{
+        "textAttr": "text=Über Uns&link=startseite"
+      }, {
+        "textAttr": "text=Dienstleistungen&link=startseite"
+      }, {
+        "textAttr": "text=Datenschutz&link=startseite"
+      }, {
+        "textAttr": "text=AGB&link=startseite"
+      }, {
+        "textAttr": "text=Kontakt&link=kontakt"
+      }],
+      "socialIcons": [{
+        "icon": "fa-brands fa-twitter",
+        "href": ""
+      }, {
+        "icon": "fa-brands fa-facebook-f",
+        "href": ""
+      }, {
+        "icon": "fa-brands fa-instagram",
+        "href": ""
+      }],
+      key: "WIDCTdokdBfnERuNi1kHY"
+    }));
+  } catch (error) {}
+  if (defaultRouter && defaultRouter !== "/") {
+    const defaultRouterItem = routerList.find(item => {
+      if (item.path === defaultRouter) {
+        return item;
+      }
+    });
+    routerList.unshift({
+      path: '/',
+      element: defaultRouterItem.element
+    });
+  }
+  const router = createBrowserRouter(routerList);
+  createRoot(document.getElementById('root')).render( /*#__PURE__*/React.createElement(RouterProvider, {
+    router: router
+  }));
+}
+render();
