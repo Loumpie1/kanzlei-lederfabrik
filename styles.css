@@ -8,14 +8,15 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
+    background-color: #f7f7f7; /* Dezente Hintergrundfarbe */
 }
 
 /* Hero-Bereich oben */
 .hero-image {
-    background-image: url('heroimage.jpg'); /* Pfad zum Hero-Bild */
+    background-image: url('heroimage.jpg'); /* Passe den Namen exakt an */
     background-size: cover;
     background-position: center;
-    height: 60vh; 
+    min-height: 60vh; 
     display: flex;
     justify-content: center; 
     align-items: center;
@@ -27,28 +28,33 @@ body {
 .hero-image h1 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     font-size: 3em;
+    max-width: 90%;
+    margin: 0 auto;
 }
 
-/* Karten-Container */
+/* Karten-Container (drei Spalten auf großen Bildschirmen) */
 .content {
     display: flex;
-    flex-wrap: wrap;            /* Karten umbrechen bei kleiner Breite */
-    justify-content: space-around;
-    padding: 20px;
+    flex-wrap: wrap;                /* Karten umbrechen, wenn kein Platz */
+    justify-content: center;        /* Karten in der Mitte ausrichten */
+    gap: 20px;                      /* Abstand zwischen Karten */
+    padding: 30px;
 }
 
 /* Einzelne Karte */
 .card {
-    background: white;
+    background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin: 10px;
-    padding: 20px;
-    width: 30%;                 /* Drei Karten nebeneinander auf großen Bildschirmen */
+    width: 300px;                   /* Feste max-Breite, wir lassen Lücken via gap */
     text-align: center;
     transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
+/* Bilder in den Karten */
 .card img {
     width: 100%;
     aspect-ratio: 16 / 9;       /* Einheitliches Seitenverhältnis */
@@ -57,10 +63,24 @@ body {
     display: block;
 }
 
+/* Inhalt in der Karte */
+.card h2 {
+    font-size: 1.2rem;
+    margin: 10px 0 5px 0;
+    padding: 0 10px;
+}
+
+.card p {
+    font-size: 1rem;
+    margin: 5px 0 10px 0;
+    padding: 0 10px;
+}
+
 .card:hover {
     transform: translateY(-5px);
 }
 
+/* Button */
 .button {
     display: inline-block;
     background: #007BFF;
@@ -68,7 +88,8 @@ body {
     padding: 10px 15px;
     text-decoration: none;
     border-radius: 5px;
-    margin-top: 10px;
+    margin: 10px auto 20px auto; /* zentrieren */
+    width: max-content;
 }
 
 .button:hover {
@@ -83,21 +104,35 @@ footer {
     padding: 20px 0;
 }
 
+.contact {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 .contact h3 {
     margin-bottom: 10px;
 }
 
 /* --- Responsive Breakpoints --- */
 
-/* Bis 768px: max. zwei Spalten */
+/* Ab ~max. 768px: Kleinere Hero-Schrift + Karten 2-spaltig oder 1-spaltig */
 @media (max-width: 768px) {
+    .hero-image h1 {
+        font-size: 2em;  /* Etwas kleinere Überschrift auf Tablets/Mobil */
+    }
+    .content {
+        gap: 20px;
+    }
     .card {
-        width: 45%;
+        width: 45%; /* Wenn 2 Karten nebeneinander passen */
     }
 }
 
-/* Bis 480px: eine Spalte pro Zeile */
+/* Ab ~max. 480px: Noch kleinere Schrift + eine Spalte */
 @media (max-width: 480px) {
+    .hero-image h1 {
+        font-size: 1.6em;
+    }
     .card {
         width: 100%;
     }
