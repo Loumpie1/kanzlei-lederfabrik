@@ -37,6 +37,7 @@ body {
     display: flex;
     flex-wrap: wrap;                /* Karten umbrechen, wenn kein Platz */
     justify-content: center;        /* Karten in der Mitte ausrichten */
+    align-items: stretch;           /* Alle Karten erhalten gleiche Höhe */
     gap: 20px;                      /* Abstand zwischen Karten */
     padding: 30px;
 }
@@ -50,14 +51,14 @@ body {
     text-align: center;
     transition: transform 0.3s;
     display: flex;
-    flex-direction: column;
+    flex-direction: column;         /* Ermöglicht das vertikale Ausrichten */
     overflow: hidden;
 }
 
 /* Bilder in den Karten */
 .card img {
     width: 100%;
-    aspect-ratio: 16 / 9;       /* Einheitliches Seitenverhältnis */
+    aspect-ratio: 16 / 9;           /* Einheitliches Seitenverhältnis */
     object-fit: cover;
     object-position: center;
     display: block;
@@ -81,6 +82,7 @@ body {
 }
 
 /* Button */
+/* Durch margin-top: auto; wird der Button immer nach unten gedrückt */
 .button {
     display: inline-block;
     background: #007BFF;
@@ -88,7 +90,7 @@ body {
     padding: 10px 15px;
     text-decoration: none;
     border-radius: 5px;
-    margin: 10px auto 20px auto; /* zentrieren */
+    margin: auto auto 20px auto;  /* margin-top: auto; sorgt dafür, dass der Button unten bleibt */
     width: max-content;
 }
 
@@ -129,6 +131,7 @@ body {
         width: 100%;
     }
 }
+
 footer {
   background-color: #2C4656;  /* Dunkles Blau-Grau, siehe Screenshot */
   color: #fff;
@@ -200,4 +203,3 @@ footer {
     margin-top: 20px;
   }
 }
-
