@@ -1,161 +1,83 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anwaltskanzlei</title>
-  <style>
-    /* Grundlegende Resets */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    body {
-      font-family: Arial, Helvetica, sans-serif; /* Hier kann z. B. eine Google Font eingebunden werden */
-      line-height: 1.6;
-      color: #333;
-    }
-    
-    /* Hero-Sektion */
-    .hero {
-      position: relative;
-      background-image: url('https://via.placeholder.com/1920x1080'); /* Hier die URL des Hero-Bildes austauschen */
-      background-size: cover;
-      background-position: center;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
-    }
-    
-    .hero h1 {
-      font-size: 3em;
-      text-align: center;
-    }
-    
-    /* Anwalt-Karten */
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      padding: 20px;
-      background-color: #f9f9f9;
-    }
-    
-    .card {
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      padding: 20px;
-      margin: 10px;
-      flex: 1 1 30%;
-      max-width: 30%;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    
-    .card h2 {
-      margin-bottom: 10px;
-    }
-    
-    .card p {
-      margin-bottom: 15px;
-      line-height: 1.4;
-    }
-    
-    .card a {
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #333;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 3px;
-    }
-    
-    /* Kontaktbereich */
-    .contact {
-      padding: 20px;
-      background-color: #fff;
-      text-align: center;
-    }
-    
-    .contact h3 {
-      margin-bottom: 10px;
-    }
-    
-    .contact p, .contact a {
-      margin-bottom: 10px;
-    }
-    
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .card {
-        flex: 1 1 45%;
-        max-width: 45%;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .hero h1 {
-        font-size: 2em;
-        padding: 0 10px;
-      }
-      .card {
-        flex: 1 1 100%;
-        max-width: 100%;
-      }
-    }
-  </style>
-</head>
-<body>
-  <!-- Hero-Sektion -->
-  <header class="hero">
-    <h1>Ihr Recht in guten Händen</h1>
-    <!-- Ändern Sie hier den Slogan, falls gewünscht -->
-  </header>
-  
-  <!-- Anwalt-Karten -->
-  <section class="cards">
-    <div class="card">
-      <h2>Anwalt 1</h2> <!-- Hier den Namen anpassen -->
-      <p>Fachgebiete: Strafrecht, Familienrecht.<br>Erfahrener Rechtsbeistand und kompetente Beratung.</p> <!-- Hier die Beschreibung ändern -->
-      <a href="#mehr1">Mehr erfahren</a> <!-- Link anpassen -->
-    </div>
-    <div class="card">
-      <h2>Anwalt 2</h2>
-      <p>Fachgebiete: Arbeitsrecht, Mietrecht.<br>Ihr Ansprechpartner für alle rechtlichen Belange.</p>
-      <a href="#mehr2">Mehr erfahren</a>
-    </div>
-    <div class="card">
-      <h2>Anwalt 3</h2>
-      <p>Fachgebiete: Verkehrsrecht, Versicherungsrecht.<br>Zuverlässiger Partner in komplexen Rechtsfragen.</p>
-      <a href="#mehr3">Mehr erfahren</a>
-    </div>
-  </section>
-  
-  <!-- Kontaktbereich -->
-  <footer class="contact">
-    <h3>Kontakt</h3>
-    <p>Musterstraße 1, 12345 Musterstadt</p> <!-- Adresse anpassen -->
-    <p>
-      <a href="https://www.google.de/maps/place/Musterstraße+1,+12345+Musterstadt" target="_blank">
-        Standort in Google Maps öffnen
-      </a> <!-- Link zu Google Maps anpassen -->
-    </p>
-    <p>Telefon: 01234 567890</p> <!-- Telefonnummer anpassen -->
-  </footer>
-  
-  <!--
-    Hinweise zum Code:
-    1. Das Hintergrundbild des Hero-Bereichs wird in der CSS-Regel für .hero festgelegt:
-         background-image: url('https://via.placeholder.com/1920x1080');
-       Hier können Sie die URL austauschen, um ein eigenes Bild zu verwenden.
-    2. Texte, Kontaktdaten und Links können direkt in den HTML-Elementen (Header, Cards, Footer) angepasst werden.
-    3. Das Layout ist responsive: Auf größeren Bildschirmen werden die Anwalt-Karten nebeneinander angezeigt, auf kleineren Bildschirmen gleiten sie untereinander.
-  -->
-</body>
-</html>
+
+Hier ist ein vollständiges HTML5-Dokument, das deinen Anforderungen entspricht. Es enthält einen Startbildschirm mit einem Spruch, drei Boxen zur Vorstellung von Anwälten und einen Kontaktbereich mit Adresse, Google Maps-Link und Telefonnummer. Die Seite ist responsiv gestaltet und verwendet moderne Elemente:
+html
+
+lang="de">
+<title>Anwaltskanzlei
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+line-height: 1.6;
+display: flex;
+flex-direction: column;
+align-items: center;
+background-color: #f4f4f4;
+}
+header {
+background: #007BFF;
+color: #fff;
+padding: 20px;
+width: 100%;
+text-align: center;
+}
+h1 {
+margin: 0;
+font-size: 2.5em;
+}
+.container {
+padding: 20px;
+max-width: 1200px;
+width: 100%;
+}
+.lawyer-box {
+background: #fff;
+border-radius: 8px;
+box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+margin: 15px;
+padding: 20px;
+flex: 1;
+min-width: 280px;
+text-align: center;
+}
+.lawyer-grid {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+margin: 20px 0;
+}
+.contact {
+text-align: center;
+margin: 40px 0;
+}
+.contact a {
+color: #007BFF;
+text-decoration: none;
+}
+footer {
+background: #333;
+color: #fff;
+text-align: center;
+padding: 10px 0;
+width: 100%;
+}
+@media (max-width: 600px) {
+h1 {
+font-size: 2em;
+}
+}
+</style>
+Willkommen bei unserer Anwaltskanzlei"Ihr Recht in besten Händen"
+<div class="lawyer-grid">
+<div class="lawyer-box">
+Anwalt 1Spezialgebiet: FamilienrechtErfahrung: 10 Jahre
+Anwalt 2Spezialgebiet: Strafrecht
+Erfahrung: 8 Jahre
+Anwalt 3
+Spezialgebiet: Erbrecht
+Erfahrung: 12 Jahre
+Kontakt
+Adresse: Musterstraße 123, 12345 Musterstadt
+Telefon: 01234 567890
+Anfahrt via Google Maps
+© 2023 Anwaltskanzlei. Alle Rechte vorbehalten.
