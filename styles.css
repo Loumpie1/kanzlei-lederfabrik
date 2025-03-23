@@ -96,14 +96,6 @@ body {
     background: #0056b3;
 }
 
-/* Footer */
-footer {
-    background: #333;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-}
-
 .contact {
     max-width: 600px;
     margin: 0 auto;
