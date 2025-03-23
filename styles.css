@@ -14,7 +14,7 @@ body {
 }
 
 .hero-image {
-    background-image: url('HeroImage.jpg'); /* Stelle sicher, dass du ein gültiges Bild verwendest */
+    background-image: url('heroImage.jpg'); /* Stelle sicher, dass du ein gültiges Bild verwendest */
     background-size: cover;
     background-position: center;
     height: 60vh; /* Höhe des Hero-Bereichs */
