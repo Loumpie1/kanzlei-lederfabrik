@@ -1,0 +1,82 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.header {
+    position: relative;
+}
+
+.hero-image {
+    background-image: url('hero-image.jpg'); /* Stelle sicher, dass du ein gültiges Bild verwendest */
+    background-size: cover;
+    background-position: center;
+    height: 60vh; /* Höhe des Hero-Bereichs */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.hero-image h1 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    font-size: 3em;
+}
+
+.content {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    flex-wrap: wrap; /* Erlaubt es, Inhalte bei geringerer Bildschirmbreite zu umbrechen */
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    padding: 20px;
+    width: 30%; /* Dimensionierung der Karten */
+    text-align: center;
+    transition: transform 0.3s; /* Animationseffekt beim Hover */
+}
+
+.card img {
+    max-width: 100%; /* Bild responsive gestalten */
+    border-radius: 5px;
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Hebt die Karte an, wenn man darüber fährt */
+}
+
+.button {
+    display: inline-block;
+    background: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.button:hover {
+    background: #0056b3;
+}
+
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.contact h3 {
+    margin-bottom: 10px;
+}
