@@ -1,83 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderne Webseite</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="hero-image">
+            <h1>Willkommen auf unserer Webseite!</h1>
+        </div>
+    </header>
 
-Hier ist ein vollständiges HTML5-Dokument, das deinen Anforderungen entspricht. Es enthält einen Startbildschirm mit einem Spruch, drei Boxen zur Vorstellung von Anwälten und einen Kontaktbereich mit Adresse, Google Maps-Link und Telefonnummer. Die Seite ist responsiv gestaltet und verwendet moderne Elemente:
-html
+    <main>
+        <section class="content">
+            <div class="card">
+                <img src="bild1.jpg" alt="Webseite 1">
+                <h2>Webseite 1</h2>
+                <p>Beschreibung der Webseite 1.</p>
+                <a href="https://webseite1.de" class="button">Besuche Webseite 1</a>
+            </div>
+            <div class="card">
+                <img src="bild2.jpg" alt="Webseite 2">
+                <h2>Webseite 2</h2>
+                <p>Beschreibung der Webseite 2.</p>
+                <a href="https://webseite2.de" class="button">Besuche Webseite 2</a>
+            </div>
+            <div class="card">
+                <img src="bild3.jpg" alt="Webseite 3">
+                <h2>Webseite 3</h2>
+                <p>Beschreibung der Webseite 3.</p>
+                <a href="https://webseite3.de" class="button">Besuche Webseite 3</a>
+            </div>
+        </section>
+    </main>
 
-lang="de">
-<title>Anwaltskanzlei
-body {
-font-family: Arial, sans-serif;
-margin: 0;
-padding: 0;
-line-height: 1.6;
-display: flex;
-flex-direction: column;
-align-items: center;
-background-color: #f4f4f4;
-}
-header {
-background: #007BFF;
-color: #fff;
-padding: 20px;
-width: 100%;
-text-align: center;
-}
-h1 {
-margin: 0;
-font-size: 2.5em;
-}
-.container {
-padding: 20px;
-max-width: 1200px;
-width: 100%;
-}
-.lawyer-box {
-background: #fff;
-border-radius: 8px;
-box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-margin: 15px;
-padding: 20px;
-flex: 1;
-min-width: 280px;
-text-align: center;
-}
-.lawyer-grid {
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-margin: 20px 0;
-}
-.contact {
-text-align: center;
-margin: 40px 0;
-}
-.contact a {
-color: #007BFF;
-text-decoration: none;
-}
-footer {
-background: #333;
-color: #fff;
-text-align: center;
-padding: 10px 0;
-width: 100%;
-}
-@media (max-width: 600px) {
-h1 {
-font-size: 2em;
-}
-}
-</style>
-Willkommen bei unserer Anwaltskanzlei"Ihr Recht in besten Händen"
-<div class="lawyer-grid">
-<div class="lawyer-box">
-Anwalt 1Spezialgebiet: FamilienrechtErfahrung: 10 Jahre
-Anwalt 2Spezialgebiet: Strafrecht
-Erfahrung: 8 Jahre
-Anwalt 3
-Spezialgebiet: Erbrecht
-Erfahrung: 12 Jahre
-Kontakt
-Adresse: Musterstraße 123, 12345 Musterstadt
-Telefon: 01234 567890
-Anfahrt via Google Maps
-© 2023 Anwaltskanzlei. Alle Rechte vorbehalten.
+    <footer>
+        <div class="contact">
+            <h3>Kontakt</h3>
+            <p>Email: info@deinewebseite.de</p>
+            <p>Telefon: +49 123 456789</p>
+        </div>
+    </footer>
+</body>
+</html>
