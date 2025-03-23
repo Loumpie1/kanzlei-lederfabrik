@@ -1,3 +1,4 @@
+/* Basis-Reset */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -9,21 +10,18 @@ body {
     line-height: 1.6;
 }
 
-.header {
-    position: relative;
-}
-
+/* Hero-Bereich oben */
 .hero-image {
-    background-image: url('heroimage.jpg'); /* Stelle sicher, dass du ein gültiges Bild verwendest */
+    background-image: url('heroimage.jpg'); /* Pfad zum Hero-Bild */
     background-size: cover;
     background-position: center;
-    height: 60vh; /* Höhe des Hero-Bereichs */
+    height: 60vh; 
     display: flex;
-    justify-content: center; /* Horizontale Zentrierung */
-    align-items: center; /* Vertikale Zentrierung */
+    justify-content: center; 
+    align-items: center;
     color: white;
-    text-align: center; /* Text zentrieren */
-    padding: 20px; /* Optionaler Abstand für besseren Stil */
+    text-align: center; 
+    padding: 20px; 
 }
 
 .hero-image h1 {
@@ -31,34 +29,36 @@ body {
     font-size: 3em;
 }
 
+/* Karten-Container */
 .content {
     display: flex;
+    flex-wrap: wrap;            /* Karten umbrechen bei kleiner Breite */
     justify-content: space-around;
     padding: 20px;
-    flex-wrap: wrap; /* Erlaubt es, Inhalte bei geringerer Bildschirmbreite zu umbrechen */
 }
 
+/* Einzelne Karte */
 .card {
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     margin: 10px;
     padding: 20px;
-    width: 30%; /* Dimensionierung der Karten */
+    width: 30%;                 /* Drei Karten nebeneinander auf großen Bildschirmen */
     text-align: center;
-    transition: transform 0.3s; /* Animationseffekt beim Hover */
+    transition: transform 0.3s;
 }
 
 .card img {
     width: 100%;
-  aspect-ratio: 16 / 9; /* oder 4 / 3 oder 1 / 1 (quadratisch) */
-  object-fit: cover;
-  object-position: center;
-  display: block;
+    aspect-ratio: 16 / 9;       /* Einheitliches Seitenverhältnis */
+    object-fit: cover;
+    object-position: center;
+    display: block;
 }
 
 .card:hover {
-    transform: translateY(-5px); /* Hebt die Karte an, wenn man darüber fährt */
+    transform: translateY(-5px);
 }
 
 .button {
@@ -75,6 +75,7 @@ body {
     background: #0056b3;
 }
 
+/* Footer */
 footer {
     background: #333;
     color: white;
@@ -84,4 +85,20 @@ footer {
 
 .contact h3 {
     margin-bottom: 10px;
+}
+
+/* --- Responsive Breakpoints --- */
+
+/* Bis 768px: max. zwei Spalten */
+@media (max-width: 768px) {
+    .card {
+        width: 45%;
+    }
+}
+
+/* Bis 480px: eine Spalte pro Zeile */
+@media (max-width: 480px) {
+    .card {
+        width: 100%;
+    }
 }
