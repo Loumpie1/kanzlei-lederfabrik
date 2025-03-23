@@ -19,9 +19,11 @@ body {
     background-position: center;
     height: 60vh; /* Höhe des Hero-Bereichs */
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* Horizontale Zentrierung */
+    align-items: center; /* Vertikale Zentrierung */
     color: white;
+    text-align: center; /* Text zentrieren */
+    padding: 20px; /* Optionaler Abstand für besseren Stil */
 }
 
 .hero-image h1 {
