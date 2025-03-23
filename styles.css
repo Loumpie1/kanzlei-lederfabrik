@@ -50,8 +50,11 @@ body {
 }
 
 .card img {
-    max-width: 100%; /* Bild responsive gestalten */
-    border-radius: 5px;
+    width: 100%;
+  aspect-ratio: 16 / 9; /* oder 4 / 3 oder 1 / 1 (quadratisch) */
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .card:hover {
