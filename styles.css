@@ -11,6 +11,13 @@ body {
     background-color: #f7f7f7; /* Dezente Hintergrundfarbe */
 }
 
+.hero-image::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); /* z.B. 40 % Schwarz */
+}
+
 /* Hero-Bereich oben */
 .hero-image {
     background-image: url('heroimage.jpg'); /* Passe den Namen exakt an */
