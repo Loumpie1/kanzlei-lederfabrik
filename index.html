@@ -81,18 +81,42 @@
   </footer>
 
   <!-- JavaScript: Automatisches Scrollen nach 1 Sekunde, wenn mobile Ansicht -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      if (window.matchMedia("(max-width: 768px)").matches) {
-        setTimeout(function() {
-          const anwaltSection = document.querySelector(".content");
-          if (anwaltSection) {
-            anwaltSection.scrollIntoView({ behavior: "smooth" });
-          }
-        }, 1000); // 1000 Millisekunden = 1 Sekunde Verzögerung
+<script>
+  // Custom smooth scrolling function
+  function smoothScrollTo(targetY, duration) {
+    const startY = window.pageYOffset;
+    const distance = targetY - startY;
+    const startTime = performance.now();
+
+    function scroll() {
+      const now = performance.now();
+      const timeElapsed = now - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      // Verwende eine Ease-In-Out-Quadratic-Funktion für einen weichen Effekt
+      const easedProgress = progress < 0.5 
+        ? 2 * progress * progress 
+        : -1 + (4 - 2 * progress) * progress;
+      window.scrollTo(0, startY + distance * easedProgress);
+      if (progress < 1) {
+        requestAnimationFrame(scroll);
       }
-    });
-  </script>
+    }
+    requestAnimationFrame(scroll);
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      setTimeout(function() {
+        const anwaltSection = document.querySelector(".content");
+        if (anwaltSection) {
+          const targetY = anwaltSection.getBoundingClientRect().top + window.pageYOffset;
+          // Hier scrollen wir über 2 Sekunden (2000 Millisekunden)
+          smoothScrollTo(targetY, 2000);
+        }
+      }, 1000); // 1 Sekunde Verzögerung
+    }
+  });
+</script>
 
 </body>
 </html>
