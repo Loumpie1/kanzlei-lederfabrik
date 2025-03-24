@@ -136,20 +136,19 @@ footer {
     padding: 30px 15px;
 }
 
-/* Grid-Container im Footer */
+/* Grid-Container im Footer (3 Spalten) */
 .footer-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    /* Falls du 4 Spalten brauchst: repeat(4, 1fr) */
-    gap: 20px;              /* Abstand horizontal und vertikal */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;               /* Abstand zwischen Spalten */
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 15px;        /* Optionaler Innenabstand */
+    padding: 0 15px;         /* Optionaler Innenabstand */
 }
 
 /* Jede Spalte im Footer */
 .footer-section {
-    /* Keine margin, Abstände kommen aus dem gap */
+    /* Keine margin, Abstände kommen aus gap */
 }
 
 /* Überschriften & Text im Footer */
@@ -174,4 +173,55 @@ footer {
 
 .footer-section a {
     color: #fff; 
-    text-decoration: none
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}
+
+/* Footer-Bottom (unterer Bereich) */
+.footer-bottom {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Trennlinie */
+.footer-bottom hr {
+    border: none;
+    border-top: 1px solid #fff;
+    margin-bottom: 10px;
+}
+
+/* Link-Liste (Impressum, Datenschutz, Cookie-Einstellungen) nebeneinander & zentriert */
+.footer-links {
+    display: flex;
+    justify-content: center;  /* Zentriert die Liste horizontal */
+    gap: 20px;               /* Abstand zwischen den Links */
+    list-style: none;
+    margin: 0 auto 15px auto; /* 15px Abstand nach unten */
+    padding: 0;
+}
+
+.footer-links li {
+    margin: 0; /* Wir nutzen gap für den Abstand */
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* RESPONSIVE FOOTER => Spalten untereinander */
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr; /* Nur 1 Spalte */
+    }
+    .footer-bottom {
+        margin-top: 20px;
+    }
+}
