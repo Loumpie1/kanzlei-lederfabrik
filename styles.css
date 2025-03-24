@@ -1,4 +1,6 @@
-/* Basis-Reset */
+/* ==================================================
+   Basis-Reset & Grundlayout
+   ================================================== */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -11,9 +13,11 @@ body {
     background-color: #f7f7f7; /* Dezente Hintergrundfarbe */
 }
 
-/* Hero-Bereich oben */
+/* ==================================================
+   Hero-Bereich oben
+   ================================================== */
 .hero-image {
-    background-image: url('heroimage.jpg'); /* Passe den Namen exakt an */
+    background-image: url('heroimage.jpg'); /* Pfad zur Hintergrundgrafik anpassen */
     background-size: cover;
     background-position: center;
     min-height: 60vh; 
@@ -32,13 +36,15 @@ body {
     margin: 0 auto;
 }
 
-/* Karten-Container (drei Spalten auf großen Bildschirmen) */
+/* ==================================================
+   Karten-Bereich (3 Spalten auf großen Bildschirmen)
+   ================================================== */
 .content {
     display: flex;
-    flex-wrap: wrap;                /* Karten umbrechen, wenn kein Platz */
-    justify-content: center;        /* Karten in der Mitte ausrichten */
-    align-items: stretch;           /* Alle Karten erhalten gleiche Höhe */
-    gap: 20px;                      /* Abstand zwischen Karten */
+    flex-wrap: wrap;         /* Karten umbrechen, wenn kein Platz */
+    justify-content: center; /* Karten in der Mitte ausrichten */
+    align-items: stretch;    /* Alle Karten auf gleiche Höhe ziehen (opt. Effekt) */
+    gap: 20px;               /* Abstand zwischen Karten */
     padding: 30px;
 }
 
@@ -47,24 +53,22 @@ body {
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;                   /* Feste max-Breite, wir lassen Lücken via gap */
+    width: 300px;               /* Feste Breite (max. 3 nebeneinander, dank gap) */
     text-align: center;
     transition: transform 0.3s;
     display: flex;
-    flex-direction: column;         /* Ermöglicht das vertikale Ausrichten */
+    flex-direction: column;     /* Vertikale Anordnung der Inhalte */
     overflow: hidden;
 }
 
-/* Bilder in den Karten */
 .card img {
     width: 100%;
-    aspect-ratio: 16 / 9;           /* Einheitliches Seitenverhältnis */
+    aspect-ratio: 16 / 9;       /* Einheitliches Seitenverhältnis */
     object-fit: cover;
     object-position: center;
     display: block;
 }
 
-/* Inhalt in der Karte */
 .card h2 {
     font-size: 1.2rem;
     margin: 10px 0 5px 0;
@@ -77,12 +81,12 @@ body {
     padding: 0 10px;
 }
 
+/* Hover-Effekt */
 .card:hover {
     transform: translateY(-5px);
 }
 
-/* Button */
-/* Durch margin-top: auto; wird der Button immer nach unten gedrückt */
+/* Button (am unteren Rand) */
 .button {
     display: inline-block;
     background: #007BFF;
@@ -90,116 +94,114 @@ body {
     padding: 10px 15px;
     text-decoration: none;
     border-radius: 5px;
-    margin: auto auto 20px auto;  /* margin-top: auto; sorgt dafür, dass der Button unten bleibt */
-    width: max-content;
+    margin: auto auto 20px auto; /* „auto“ oben + unten sorgt für spacing */
+    width: max-content;          /* Button wird nicht verbreitert */
 }
 
 .button:hover {
     background: #0056b3;
 }
 
-.contact {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.contact h3 {
-    margin-bottom: 10px;
-}
-
-/* --- Responsive Breakpoints --- */
-
-/* Ab ~max. 768px: Kleinere Hero-Schrift + Karten 2-spaltig oder 1-spaltig */
+/* ==================================================
+   Responsive Breakpoints
+   ================================================== */
+/* ~ max-width: 768px => z.B. Tablets */
 @media (max-width: 768px) {
     .hero-image h1 {
-        font-size: 2em;  /* Etwas kleinere Überschrift auf Tablets/Mobil */
+        font-size: 2em;  /* Etwas kleinere Überschrift */
     }
     .content {
         gap: 20px;
     }
     .card {
-        width: 45%; /* Wenn 2 Karten nebeneinander passen */
+        width: 45%; /* 2 Karten nebeneinander, wenn genug Platz */
     }
 }
 
-/* Ab ~max. 480px: Noch kleinere Schrift + eine Spalte */
+/* ~ max-width: 480px => Smartphones */
 @media (max-width: 480px) {
     .hero-image h1 {
         font-size: 1.6em;
     }
     .card {
-        width: 100%;
+        width: 100%; /* Jede Karte über die volle Breite */
     }
 }
 
+/* ==================================================
+   Footer
+   ================================================== */
 footer {
-  background-color: #2C4656;  /* Dunkles Blau-Grau, siehe Screenshot */
-  color: #fff;
-  padding: 30px 15px;
+    background-color: #2C4656;  /* Dunkles Blau-Grau */
+    color: #fff;
+    padding: 30px 15px;
 }
 
 .footer-container {
-  display: flex;
-  flex-wrap: wrap;        /* Zeilenumbruch erlauben auf kleineren Bildschirmen */
-  justify-content: space-between;
-  max-width: 1200px;      /* Optional: Begrenze Breite, z. B. mittig */
-  margin: 0 auto;         /* Zentriert auf der Seite */
+    display: flex;
+    flex-wrap: wrap;       /* Zeilenumbruch bei schmalen Bildschirmen */
+    justify-content: space-between;
+    gap: 20px;             /* Abstand zwischen den Footer-Spalten */
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
+/* Jede Spalte im Footer */
 .footer-section {
-  flex: 1 1 200px;        /* Mindestens 200px, kann wachsen */
-  margin: 10px;
+    flex: 1 1 200px;       /* Mind. 200px breit, kann wachsen */
+    margin: 0;             /* Abstände kommen vom 'gap' */
 }
 
-.footer-section h2, 
+.footer-section h2,
 .footer-section h3 {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .footer-section p {
-  margin-bottom: 8px;
-  line-height: 1.4;
+    margin-bottom: 8px;
+    line-height: 1.4;
 }
 
 .footer-section ul {
-  list-style: none;       /* Keine Aufzählungspunkte */
-  padding: 0;
+    list-style: none;
+    padding: 0;
 }
 
 .footer-section li {
-  margin-bottom: 6px;
+    margin-bottom: 6px;
 }
 
 .footer-section a {
-  color: #fff;            /* Links in Weiß */
-  text-decoration: none;
+    color: #fff; 
+    text-decoration: none;
 }
 
 .footer-section a:hover {
-  text-decoration: underline; 
+    text-decoration: underline;
 }
 
+/* Unterer Balken (Copyright) */
 .footer-bottom {
-  margin-top: 30px;
-  text-align: center;
+    margin-top: 30px;      /* etwas Abstand nach oben */
+    text-align: center;
 }
 
 .footer-bottom hr {
-  border: none;
-  border-top: 1px solid #fff; 
-  margin-bottom: 10px;
+    border: none;
+    border-top: 1px solid #fff; 
+    margin-bottom: 10px;
 }
 
-/* Responsive: Spalten auf Handy untereinander statt nebeneinander */
+/* Responsive Footer => Spalten untereinander statt nebeneinander */
 @media (max-width: 768px) {
-  .footer-container {
-    flex-direction: column; 
-    align-items: flex-start; 
-  }
-  .footer-section {
-    width: 100%; 
-  }
-  .footer-bottom {
-    margin-top: 20px;
-  }
+    .footer-container {
+        flex-direction: column; 
+        align-items: flex-start; 
+    }
+    .footer-section {
+        width: 100%; 
+    }
+    .footer-bottom {
+        margin-top: 20px;
+    }
 }
