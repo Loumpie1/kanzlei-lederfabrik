@@ -85,7 +85,7 @@ body {
     transform: translateY(-5px);
 }
 
-/* Button unten positioniert durch margin: auto auto 20px auto */
+/* Button, unten positioniert */
 .button {
     display: inline-block;
     background: #007BFF;
@@ -125,6 +125,10 @@ body {
     .card {
         width: 100%; /* 1 Spalte pro Zeile */
     }
+    /* Reihenfolge der Karten anpassen: mittlerer Container zuerst, dann erster, dann dritter */
+    .card:nth-child(1) { order: 2; }
+    .card:nth-child(2) { order: 1; }
+    .card:nth-child(3) { order: 3; }
 }
 
 /* ==================================================
@@ -148,7 +152,7 @@ footer {
 
 /* Jede Spalte im Footer */
 .footer-section {
-    /* Keine margin, Abstände kommen aus gap */
+    /* Keine extra margin, der Abstand wird über das gap geregelt */
 }
 
 /* Überschriften & Text im Footer */
@@ -197,14 +201,14 @@ footer {
 .footer-links {
     display: flex;
     justify-content: center;  /* Zentriert die Liste horizontal */
-    gap: 20px;               /* Abstand zwischen den Links */
+    gap: 20px;                /* Abstand zwischen den Links */
     list-style: none;
-    margin: 0 auto 15px auto; /* 15px Abstand nach unten */
+    margin: 0 auto 15px auto;  /* 15px Abstand nach unten */
     padding: 0;
 }
 
 .footer-links li {
-    margin: 0; /* Wir nutzen gap für den Abstand */
+    margin: 0; /* Abstand wird über gap geregelt */
 }
 
 .footer-links a {
@@ -216,7 +220,7 @@ footer {
     text-decoration: underline;
 }
 
-/* RESPONSIVE FOOTER => Spalten untereinander */
+/* RESPONSIVE FOOTER: Spalten untereinander */
 @media (max-width: 768px) {
     .footer-container {
         grid-template-columns: 1fr; /* Nur 1 Spalte */
