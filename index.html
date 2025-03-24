@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kanzlei in der Lederfabrik</title>
-  <!-- Binde deine externe CSS-Datei ein -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,7 +17,6 @@
 
   <!-- Haupt-Inhalt -->
   <main>
-    <!-- Cards / Anwälte-Bereich -->
     <section class="content">
       <div class="card">
         <img src="Alex.jpg" alt="Rechtsanwalt Neuhaus">
@@ -43,23 +41,21 @@
 
   <!-- Footer -->
   <footer>
-    <!-- Drei Spalten im Grid -->
     <div class="footer-container">
-      <!-- Spalte 1 -->
+      <!-- Spalte 1: Logo/Name -->
       <div class="footer-section">
         <h2>KANZLEI IN DER ALTEN LEDERFABRIK</h2>
         <h3>Rechtsanwälte &amp; Notare</h3>
       </div>
-
-      <!-- Spalte 2 -->
+      <!-- Spalte 2: Adresse & Kontakt -->
       <div class="footer-section">
-        <p>Kanzlei in der Alten Lederfabrik<br>
-           Düsseldorfer Straße 269<br>
-           45481 Mülheim an der Ruhr
+        <p>
+          Kanzlei in der Alten Lederfabrik<br>
+          Düsseldorfer Straße 269<br>
+          45481 Mülheim an der Ruhr
         </p>
       </div>
-
-      <!-- Spalte 3 -->
+      <!-- Spalte 3: Öffnungszeiten -->
       <div class="footer-section">
         <h3>ÖFFNUNGSZEITEN</h3>
         <p>
@@ -72,8 +68,7 @@
         </p>
       </div>
     </div>
-
-    <!-- Footer-Bottom mit Links & Copyright -->
+    <!-- Unterer Footer-Bereich -->
     <div class="footer-bottom">
       <hr>
       <ul class="footer-links">
@@ -85,18 +80,18 @@
     </div>
   </footer>
 
-  <!-- JavaScript: Automatisches Scrollen auf Smartphones (max. 768px) -->
+  <!-- JavaScript: Automatisches Scrollen nach 1 Sekunde, wenn mobile Ansicht -->
   <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Prüfe, ob die Bildschirmbreite <= 768px ist
-    if (window.matchMedia("(max-width: 768px)").matches) {
-      // Scrolle zum Bereich .content (Anwaltskarten)
-      const anwaltSection = document.querySelector(".content");
-      if (anwaltSection) {
-        anwaltSection.scrollIntoView({ behavior: "smooth" });
+    document.addEventListener("DOMContentLoaded", function() {
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        setTimeout(function() {
+          const anwaltSection = document.querySelector(".content");
+          if (anwaltSection) {
+            anwaltSection.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 1000); // 1000 Millisekunden = 1 Sekunde Verzögerung
       }
-    }
-  });
+    });
   </script>
 
 </body>
